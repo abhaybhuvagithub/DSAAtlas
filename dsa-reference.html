@@ -1,0 +1,2403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSA Atlas — Data Structures & Algorithms Reference</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fafaf7;
+    --bg2: #f0efe8;
+    --ink: #0f0e0b;
+    --ink2: #3d3c38;
+    --ink3: #7a7970;
+    --accent: #e84f2b;
+    --accent2: #f5a623;
+    --accent3: #1a6ef5;
+    --accent4: #0dbf7a;
+    --card: #ffffff;
+    --border: #e2e1d8;
+    --tag-bg: #f0efe8;
+    --shadow: 0 2px 16px rgba(0,0,0,0.07);
+    --radius: 12px;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Syne', sans-serif;
+    --serif: 'Lora', serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--serif);
+    line-height: 1.65;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--ink);
+    color: #fff;
+    padding: 80px 40px 70px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -80px;
+    width: 420px; height: 420px;
+    background: radial-gradient(circle, rgba(232,79,43,0.25) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -100px; left: 30%;
+    width: 350px; height: 350px;
+    background: radial-gradient(circle, rgba(26,110,245,0.18) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .hero-inner { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 100px;
+    padding: 4px 14px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-family: var(--sans);
+    font-size: clamp(2.8rem, 6vw, 5.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero p {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    color: rgba(255,255,255,0.65);
+    max-width: 560px;
+    margin-bottom: 36px;
+  }
+  .hero-stats {
+    display: flex; gap: 40px; flex-wrap: wrap;
+  }
+  .stat { }
+  .stat-num {
+    font-family: var(--sans);
+    font-size: 2rem;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1;
+  }
+  .stat-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: rgba(255,255,255,0.45);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 3px;
+  }
+
+  /* SEARCH */
+  .search-bar {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 40px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .search-input-wrap {
+    flex: 1;
+    max-width: 480px;
+    position: relative;
+  }
+  .search-input-wrap svg {
+    position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+    opacity: 0.4;
+  }
+  .search-input {
+    width: 100%;
+    padding: 10px 16px 10px 42px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-family: var(--mono);
+    font-size: 13px;
+    background: var(--bg);
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-input:focus { border-color: var(--accent3); }
+  .nav-pills {
+    display: flex; gap: 6px; flex-wrap: wrap;
+  }
+  .pill {
+    padding: 6px 14px;
+    border-radius: 100px;
+    border: 1.5px solid var(--border);
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    background: transparent;
+    color: var(--ink2);
+    white-space: nowrap;
+  }
+  .pill:hover { border-color: var(--accent3); color: var(--accent3); }
+  .pill.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+  /* LAYOUT */
+  .main-layout {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 48px 40px;
+  }
+
+  /* SECTION */
+  .section {
+    margin-bottom: 64px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--ink);
+  }
+  .section-icon {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-family: var(--sans);
+    font-size: 1.7rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .section-count {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink3);
+    margin-top: 2px;
+  }
+
+  /* CARDS GRID */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 20px;
+  }
+
+  /* DSA CARD */
+  .dsa-card {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: box-shadow 0.2s, transform 0.2s;
+    cursor: pointer;
+  }
+  .dsa-card:hover {
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+  }
+  .dsa-card.expanded { grid-column: 1 / -1; }
+  .card-header {
+    padding: 22px 24px 18px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card-icon {
+    width: 40px; height: 40px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .card-title {
+    font-family: var(--sans);
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: 4px;
+  }
+  .card-subtitle {
+    font-size: 0.82rem;
+    color: var(--ink3);
+    font-family: var(--mono);
+  }
+  .card-tags {
+    display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px;
+  }
+  .tag {
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    background: var(--tag-bg);
+    color: var(--ink3);
+    border: 1px solid var(--border);
+  }
+  .tag.green { background: #e7faf2; color: #0a7a4a; border-color: #b2e8d0; }
+  .tag.yellow { background: #fffbea; color: #7a5a00; border-color: #ffe082; }
+  .tag.red { background: #fef0ec; color: #b8320a; border-color: #fcc0a8; }
+  .tag.blue { background: #eef4ff; color: #1a4aaa; border-color: #b0c8ff; }
+
+  .card-body { padding: 20px 24px; }
+
+  /* COMPLEXITY TABLE */
+  .complexity-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--mono);
+    font-size: 12px;
+    margin-bottom: 16px;
+  }
+  .complexity-table th {
+    text-align: left;
+    padding: 6px 10px;
+    background: var(--bg2);
+    color: var(--ink3);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+  }
+  .complexity-table td {
+    padding: 7px 10px;
+    border-bottom: 1px solid var(--border);
+    color: var(--ink2);
+  }
+  .complexity-table tr:last-child td { border-bottom: none; }
+  .o-n1 { color: #0dbf7a; font-weight: 700; }
+  .o-logn { color: #1a6ef5; font-weight: 700; }
+  .o-n { color: #f5a623; font-weight: 700; }
+  .o-nlogn { color: #e84f2b; font-weight: 600; }
+  .o-n2 { color: #c0392b; font-weight: 700; }
+  .o-2n { color: #8e44ad; font-weight: 700; }
+
+  /* EXPANDABLE */
+  .expand-toggle {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent3);
+    border-top: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+  .expand-toggle:hover { background: var(--bg); }
+  .expand-toggle svg { transition: transform 0.2s; }
+  .expand-toggle.open svg { transform: rotate(180deg); }
+
+  .expand-content {
+    display: none;
+    padding: 20px 24px;
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+    animation: slideDown 0.2s ease;
+  }
+  .expand-content.open { display: block; }
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .info-section { margin-bottom: 16px; }
+  .info-label {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink3);
+    margin-bottom: 6px;
+  }
+  .info-list {
+    list-style: none;
+    padding: 0;
+  }
+  .info-list li {
+    padding: 5px 0;
+    padding-left: 16px;
+    position: relative;
+    font-size: 0.87rem;
+    color: var(--ink2);
+    border-bottom: 1px dashed var(--border);
+  }
+  .info-list li:last-child { border-bottom: none; }
+  .info-list li::before {
+    content: '›';
+    position: absolute; left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* DIAGRAM */
+  .diagram-area {
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 16px;
+    overflow-x: auto;
+  }
+  .diagram-area svg { display: block; margin: 0 auto; }
+
+  /* ALGO CARDS FULL WIDTH */
+  .algo-card {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+  .algo-card:hover { box-shadow: var(--shadow); }
+  .algo-header {
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .algo-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink3);
+    background: var(--bg2);
+    padding: 4px 8px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+  .algo-title {
+    font-family: var(--sans);
+    font-size: 1rem;
+    font-weight: 700;
+    flex: 1;
+  }
+  .algo-chips { display: flex; gap: 6px; }
+
+  .algo-body {
+    display: none;
+    padding: 0 24px 24px;
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+    animation: slideDown 0.2s ease;
+  }
+  .algo-body.open { display: block; }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 16px;
+  }
+  @media (max-width: 700px) {
+    .two-col { grid-template-columns: 1fr; }
+    .cards-grid { grid-template-columns: 1fr; }
+    .hero { padding: 48px 20px; }
+    .main-layout { padding: 32px 16px; }
+    .search-bar { padding: 12px 16px; flex-wrap: wrap; }
+    .nav-pills { display: none; }
+  }
+
+  /* BIG COMPLEXITY CHART */
+  .complexity-chart-wrap {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin-bottom: 48px;
+  }
+  .chart-title {
+    font-family: var(--sans);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .chart-sub {
+    font-size: 0.83rem;
+    color: var(--ink3);
+    font-family: var(--mono);
+    margin-bottom: 20px;
+  }
+  .complexity-legend {
+    display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px;
+  }
+  .legend-item {
+    display: flex; align-items: center; gap: 6px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink2);
+  }
+  .legend-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink);
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 32px 20px;
+    font-family: var(--mono);
+    font-size: 12px;
+    margin-top: 40px;
+  }
+  footer span { color: var(--accent); }
+
+  /* Hidden for filter */
+  .hidden { display: none !important; }
+
+  /* Breadcrumb */
+  .breadcrumb {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink3);
+    margin-bottom: 32px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .breadcrumb span { color: var(--ink); }
+
+  /* Pseudocode */
+  .pseudocode {
+    background: #0f0e0b;
+    color: #f0efe8;
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.7;
+    overflow-x: auto;
+    margin-top: 8px;
+  }
+  .kw { color: #e84f2b; }
+  .fn { color: #f5a623; }
+  .cm { color: #5a5a52; font-style: italic; }
+  .str { color: #0dbf7a; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">
+      <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#0dbf7a"/></svg>
+      Complete Reference
+    </div>
+    <h1>DSA <span>Atlas</span><br>Data Structures &<br>Algorithms</h1>
+    <p>An interactive reference covering every major data structure and algorithm — with runtime complexity, trade-offs, corner cases, and real-world applications.</p>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">12</div><div class="stat-label">Data Structures</div></div>
+      <div class="stat"><div class="stat-num">25+</div><div class="stat-label">Algorithms</div></div>
+      <div class="stat"><div class="stat-num">Big-O</div><div class="stat-label">All Complexities</div></div>
+      <div class="stat"><div class="stat-num">Visual</div><div class="stat-label">Diagrams</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- SEARCH BAR -->
+<div class="search-bar">
+  <div class="search-input-wrap">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input class="search-input" type="text" id="searchInput" placeholder="Search structures, algorithms..." oninput="filterCards()">
+  </div>
+  <div class="nav-pills">
+    <button class="pill active" onclick="filterByCategory('all', this)">All</button>
+    <button class="pill" onclick="filterByCategory('linear', this)">Linear</button>
+    <button class="pill" onclick="filterByCategory('tree', this)">Trees</button>
+    <button class="pill" onclick="filterByCategory('hash', this)">Hashing</button>
+    <button class="pill" onclick="filterByCategory('graph', this)">Graphs</button>
+    <button class="pill" onclick="filterByCategory('sort', this)">Sorting</button>
+    <button class="pill" onclick="filterByCategory('search', this)">Searching</button>
+    <button class="pill" onclick="filterByCategory('dp', this)">DP</button>
+  </div>
+</div>
+
+<div class="main-layout">
+  <div class="breadcrumb">dsa-atlas / <span>all topics</span></div>
+
+  <!-- BIG O CHART -->
+  <div class="complexity-chart-wrap">
+    <div class="chart-title">Big-O Complexity Reference</div>
+    <div class="chart-sub">How algorithms scale with input size n →</div>
+    <svg id="bigOChart" viewBox="0 0 760 260" width="100%" xmlns="http://www.w3.org/2000/svg">
+      <!-- Grid -->
+      <defs>
+        <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L6,3 z" fill="#0f0e0b" opacity="0.5"/>
+        </marker>
+      </defs>
+      <!-- Axes -->
+      <line x1="50" y1="240" x2="740" y2="240" stroke="#0f0e0b" stroke-width="1.5" opacity="0.3" marker-end="url(#arrow)"/>
+      <line x1="50" y1="240" x2="50" y2="10" stroke="#0f0e0b" stroke-width="1.5" opacity="0.3" marker-end="url(#arrow)"/>
+      <!-- Axis labels -->
+      <text x="750" y="244" font-family="JetBrains Mono" font-size="11" fill="#7a7970">n</text>
+      <text x="36" y="14" font-family="JetBrains Mono" font-size="11" fill="#7a7970">ops</text>
+      <!-- Grid lines -->
+      <line x1="50" y1="200" x2="735" y2="200" stroke="#e2e1d8" stroke-width="1" stroke-dasharray="4,4"/>
+      <line x1="50" y1="160" x2="735" y2="160" stroke="#e2e1d8" stroke-width="1" stroke-dasharray="4,4"/>
+      <line x1="50" y1="120" x2="735" y2="120" stroke="#e2e1d8" stroke-width="1" stroke-dasharray="4,4"/>
+      <line x1="50" y1="80" x2="735" y2="80" stroke="#e2e1d8" stroke-width="1" stroke-dasharray="4,4"/>
+      <!-- O(1) -->
+      <line x1="55" y1="230" x2="730" y2="230" stroke="#0dbf7a" stroke-width="2.5"/>
+      <text x="695" y="225" font-family="JetBrains Mono" font-size="10" fill="#0dbf7a">O(1)</text>
+      <!-- O(log n) -->
+      <path d="M55,215 Q200,200 400,185 Q600,172 730,165" fill="none" stroke="#1a6ef5" stroke-width="2.5"/>
+      <text x="695" y="162" font-family="JetBrains Mono" font-size="10" fill="#1a6ef5">O(log n)</text>
+      <!-- O(n) -->
+      <line x1="55" y1="235" x2="730" y2="115" stroke="#f5a623" stroke-width="2.5"/>
+      <text x="695" y="112" font-family="JetBrains Mono" font-size="10" fill="#f5a623">O(n)</text>
+      <!-- O(n log n) -->
+      <path d="M55,235 Q150,200 300,150 Q450,105 600,70 Q670,52 730,40" fill="none" stroke="#e84f2b" stroke-width="2.5"/>
+      <text x="695" y="38" font-family="JetBrains Mono" font-size="10" fill="#e84f2b">O(n log n)</text>
+      <!-- O(n²) -->
+      <path d="M55,238 Q120,230 200,210 Q300,180 400,140 Q500,100 600,50 Q650,28 680,18" fill="none" stroke="#c0392b" stroke-width="2" stroke-dasharray="6,3"/>
+      <text x="550" y="44" font-family="JetBrains Mono" font-size="10" fill="#c0392b">O(n²)</text>
+      <!-- O(2^n) -->
+      <path d="M55,239 Q100,238 150,235 Q200,225 250,200 Q300,155 330,80" fill="none" stroke="#8e44ad" stroke-width="2" stroke-dasharray="4,3"/>
+      <text x="275" y="72" font-family="JetBrains Mono" font-size="10" fill="#8e44ad">O(2ⁿ)</text>
+    </svg>
+    <div class="complexity-legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#0dbf7a"></div>O(1) — Constant</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#1a6ef5"></div>O(log n) — Logarithmic</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#f5a623"></div>O(n) — Linear</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#e84f2b"></div>O(n log n) — Linearithmic</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#c0392b"></div>O(n²) — Quadratic</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#8e44ad"></div>O(2ⁿ) — Exponential</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       SECTION: LINEAR DATA STRUCTURES
+  ════════════════════════════════════════ -->
+  <div class="section" id="sec-linear">
+    <div class="section-header">
+      <div class="section-icon" style="background:#fff8e7; font-size:22px;">⬛</div>
+      <div>
+        <div class="section-title">Linear Data Structures</div>
+        <div class="section-count">Array · Linked List · Stack · Queue · Deque</div>
+      </div>
+    </div>
+    <div class="cards-grid" id="linear-grid">
+
+      <!-- ARRAY -->
+      <div class="dsa-card" data-category="linear" data-name="array dynamic static">
+        <div class="card-header">
+          <div class="card-icon" style="background:#e7faf2;">📦</div>
+          <div>
+            <div class="card-title">Array</div>
+            <div class="card-subtitle">Contiguous memory, index-based</div>
+            <div class="card-tags">
+              <span class="tag green">Access O(1)</span>
+              <span class="tag yellow">Insert O(n)</span>
+              <span class="tag blue">Static / Dynamic</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="diagram-area">
+            <svg viewBox="0 0 400 80" width="100%" xmlns="http://www.w3.org/2000/svg">
+              <defs><style>.arr-cell{fill:#fff;stroke:#e2e1d8;stroke-width:1.5;rx:4}.arr-val{font-family:'JetBrains Mono',monospace;font-size:14;font-weight:600;fill:#0f0e0b}.arr-idx{font-family:'JetBrains Mono',monospace;font-size:10;fill:#7a7970}</defs>
+              <!-- Cells -->
+              <g transform="translate(10,10)">
+                <rect x="0" y="0" width="52" height="44" rx="6" class="arr-cell" fill="#e7faf2" stroke="#0dbf7a" stroke-width="2"/>
+                <text x="26" y="27" text-anchor="middle" class="arr-val" fill="#0a7a4a">42</text>
+                <text x="26" y="60" text-anchor="middle" class="arr-idx">[0]</text>
+              </g>
+              <g transform="translate(68,10)">
+                <rect x="0" y="0" width="52" height="44" rx="6" class="arr-cell"/>
+                <text x="26" y="27" text-anchor="middle" class="arr-val">17</text>
+                <text x="26" y="60" text-anchor="middle" class="arr-idx">[1]</text>
+              </g>
+              <g transform="translate(126,10)">
+                <rect x="0" y="0" width="52" height="44" rx="6" class="arr-cell"/>
+                <text x="26" y="27" text-anchor="middle" class="arr-val">85</text>
+                <text x="26" y="60" text-anchor="middle" class="arr-idx">[2]</text>
+              </g>
+              <g transform="translate(184,10)">
+                <rect x="0" y="0" width="52" height="44" rx="6" class="arr-cell" fill="#eef4ff" stroke="#1a6ef5" stroke-width="2"/>
+                <text x="26" y="27" text-anchor="middle" class="arr-val" fill="#1a4aaa">31</text>
+                <text x="26" y="60" text-anchor="middle" class="arr-idx">[3]</text>
+              </g>
+              <g transform="translate(242,10)">
+                <rect x="0" y="0" width="52" height="44" rx="6" class="arr-cell"/>
+                <text x="26" y="27" text-anchor="middle" class="arr-val">99</text>
+                <text x="26" y="60" text-anchor="middle" class="arr-idx">[4]</text>
+              </g>
+              <g transform="translate(300,10)">
+                <rect x="0" y="0" width="52" height="44" rx="6" class="arr-cell"/>
+                <text x="26" y="27" text-anchor="middle" class="arr-val">56</text>
+                <text x="26" y="60" text-anchor="middle" class="arr-idx">[5]</text>
+              </g>
+              <!-- Memory label -->
+              <text x="200" y="78" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#7a7970">← contiguous memory addresses →</text>
+            </svg>
+          </div>
+          <table class="complexity-table">
+            <tr><th>Operation</th><th>Best</th><th>Average</th><th>Worst</th><th>Space</th></tr>
+            <tr><td>Access</td><td class="o-n1">O(1)</td><td class="o-n1">O(1)</td><td class="o-n1">O(1)</td><td rowspan="5" class="o-n" style="vertical-align:middle">O(n)</td></tr>
+            <tr><td>Search</td><td class="o-n1">O(1)</td><td class="o-n">O(n)</td><td class="o-n">O(n)</td></tr>
+            <tr><td>Insert (end)</td><td class="o-n1">O(1)</td><td class="o-n1">O(1)</td><td class="o-n">O(n)*</td></tr>
+            <tr><td>Insert (mid)</td><td class="o-n">O(n)</td><td class="o-n">O(n)</td><td class="o-n">O(n)</td></tr>
+            <tr><td>Delete</td><td class="o-n1">O(1)</td><td class="o-n">O(n)</td><td class="o-n">O(n)</td></tr>
+          </table>
+          <div style="font-size:0.78rem;color:var(--ink3);font-family:var(--mono);">* amortized for dynamic arrays</div>
+        </div>
+        <button class="expand-toggle" onclick="toggleExpand(this)">
+          Details: Trade-offs, Corner Cases, Applications
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="expand-content">
+          <div class="two-col">
+            <div>
+              <div class="info-section">
+                <div class="info-label">✅ Strengths</div>
+                <ul class="info-list">
+                  <li>O(1) random access via index</li>
+                  <li>Cache-friendly — excellent spatial locality</li>
+                  <li>Simple to implement and use</li>
+                  <li>Supports binary search on sorted arrays</li>
+                </ul>
+              </div>
+              <div class="info-section">
+                <div class="info-label">⚠️ Weaknesses / Trade-offs</div>
+                <ul class="info-list">
+                  <li>Fixed size (static) — resizing is expensive O(n)</li>
+                  <li>Insertions/deletions in middle are O(n) due to shifting</li>
+                  <li>Wasted memory if over-allocated</li>
+                  <li>Contiguous memory may be hard to allocate for large sizes</li>
+                </ul>
+              </div>
+            </div>
+            <div>
+              <div class="info-section">
+                <div class="info-label">🐛 Corner Cases</div>
+                <ul class="info-list">
+                  <li>Off-by-one errors (0-indexed vs 1-indexed)</li>
+                  <li>Empty array — accessing index 0 causes crash</li>
+                  <li>Integer overflow in mid = (left+right)/2 → use left+(right-left)/2</li>
+                  <li>Negative indices in some languages</li>
+                  <li>Stack overflow with recursive array traversal on large arrays</li>
+                </ul>
+              </div>
+              <div class="info-section">
+                <div class="info-label">🚀 Real-world Applications</div>
+                <ul class="info-list">
+                  <li>Database row storage and buffers</li>
+                  <li>Image pixel matrices (2D arrays)</li>
+                  <li>Stack/Queue implementations underneath</li>
+                  <li>Lookup tables, memoization caches</li>
+                  <li>NumPy, GPU compute tensors (ML)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LINKED LIST -->
+      <div class="dsa-card" data-category="linear" data-name="linked list singly doubly">
+        <div class="card-header">
+          <div class="card-icon" style="background:#eef4ff;">🔗</div>
+          <div>
+            <div class="card-title">Linked List</div>
+            <div class="card-subtitle">Nodes with pointers (Singly / Doubly)</div>
+            <div class="card-tags">
+              <span class="tag green">Insert O(1)*</span>
+              <span class="tag yellow">Search O(n)</span>
+              <span class="tag blue">Dynamic size</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="diagram-area">
+            <svg viewBox="0 0 420 80" width="100%" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arr2" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+                  <path d="M0,0 L0,6 L8,3 z" fill="#1a6ef5"/>
+                </marker>
+              </defs>
+              <!-- Nodes -->
+              <!-- Head label -->
+              <text x="36" y="10" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#0dbf7a" font-weight="700">HEAD</text>
+              <rect x="10" y="15" width="52" height="36" rx="6" fill="#fff" stroke="#1a6ef5" stroke-width="2"/>
+              <line x1="36" y1="15" x2="36" y2="51" stroke="#e2e1d8" stroke-width="1"/>
+              <text x="23" y="38" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="13" font-weight="700" fill="#0f0e0b">12</text>
+              <circle cx="46" cy="33" r="5" fill="#1a6ef5" opacity="0.7"/>
+              
+              <line x1="62" y1="33" x2="80" y2="33" stroke="#1a6ef5" stroke-width="1.5" marker-end="url(#arr2)"/>
+              
+              <rect x="82" y="15" width="52" height="36" rx="6" fill="#fff" stroke="#e2e1d8" stroke-width="1.5"/>
+              <line x1="108" y1="15" x2="108" y2="51" stroke="#e2e1d8" stroke-width="1"/>
+              <text x="95" y="38" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="13" font-weight="700" fill="#0f0e0b">37</text>
+              <circle cx="118" cy="33" r="5" fill="#1a6ef5" opacity="0.7"/>
+              
+              <line x1="134" y1="33" x2="152" y2="33" stroke="#1a6ef5" stroke-width="1.5" marker-end="url(#arr2)"/>
+              
+              <rect x="154" y="15" width="52" height="36" rx="6" fill="#fff" stroke="#e2e1d8" stroke-width="1.5"/>
+              <line x1="180" y1="15" x2="180" y2="51" stroke="#e2e1d8" stroke-width="1"/>
+              <text x="167" y="38" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="13" font-weight="700" fill="#0f0e0b">99</text>
+              <circle cx="190" cy="33" r="5" fill="#1a6ef5" opacity="0.7"/>
+              
+              <line x1="206" y1="33" x2="224" y2="33" stroke="#1a6ef5" stroke-width="1.5" marker-end="url(#arr2)"/>
+              
+              <rect x="226" y="15" width="52" height="36" rx="6" fill="#fff" stroke="#e2e1d8" stroke-width="1.5"/>
+              <line x1="252" y1="15" x2="252" y2="51" stroke="#e2e1d8" stroke-width="1"/>
+              <text x="239" y="38" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="13" font-weight="700" fill="#0f0e0b">54</text>
+              <circle cx="262" cy="33" r="5" fill="#1a6ef5" opacity="0.7"/>
+              
+              <line x1="278" y1="33" x2="296" y2="33" stroke="#1a6ef5" stroke-width="1.5" marker-end="url(#arr2)"/>
+              
+              <!-- Tail -->
+              <rect x="298" y="15" width="52" height="36" rx="6" fill="#fef0ec" stroke="#e84f2b" stroke-width="2"/>
+              <line x1="324" y1="15" x2="324" y2="51" stroke="#fcc0a8" stroke-width="1"/>
+              <text x="311" y="38" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="13" font-weight="700" fill="#0f0e0b">8</text>
+              <text x="334" y="38" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#b8320a">null</text>
+              <text x="324" y="64" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#e84f2b" font-weight="700">TAIL</text>
+              
+              <!-- data/next labels -->
+              <text x="23" y="76" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#7a7970">data</text>
+              <text x="46" y="76" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#7a7970">next</text>
+            </svg>
+          </div>
+          <table class="complexity-table">
+            <tr><th>Operation</th><th>Singly</th><th>Doubly</th><th>Space</th></tr>
+            <tr><td>Access (by index)</td><td class="o-n">O(n)</td><td class="o-n">O(n)</td><td rowspan="5" class="o-n" style="vertical-align:middle">O(n)</td></tr>
+            <tr><td>Search</td><td class="o-n">O(n)</td><td class="o-n">O(n)</td></tr>
+            <tr><td>Insert (head/tail)</td><td class="o-n1">O(1)</td><td class="o-n1">O(1)</td></tr>
+            <tr><td>Insert (middle)</td><td class="o-n">O(n)</td><td class="o-n">O(n)</td></tr>
+            <tr><td>Delete (head)</td><td class="o-n1">O(1)</td><td class="o-n1">O(1)</td></tr>
+          </table>
+        </div>
+        <button class="expand-toggle" onclick="toggleExpand(this)">
+          Details: Trade-offs, Corner Cases, Applications
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="expand-content">
+          <div class="two-col">
+            <div>
+              <div class="info-section">
+                <div class="info-label">✅ Strengths</div>
+                <ul class="info-list">
+                  <li>O(1) insertions/deletions at head (singly) or both ends (doubly)</li>
+                  <li>Dynamic size — no pre-allocation needed</li>
+                  <li>No wasted capacity unlike arrays</li>
+                  <li>Doubly linked supports reverse traversal</li>
+                </ul>
+              </div>
+              <div class="info-section">
+                <div class="info-label">⚠️ Weaknesses / Trade-offs</div>
+                <ul class="info-list">
+                  <li>No random access — O(n) to reach index k</li>
+                  <li>Extra memory per node for pointer(s)</li>
+                  <li>Poor cache locality vs arrays</li>
+                  <li>No binary search possible</li>
+                </ul>
+              </div>
+            </div>
+            <div>
+              <div class="info-section">
+                <div class="info-label">🐛 Corner Cases</div>
+                <ul class="info-list">
+                  <li>Null pointer dereference on empty list</li>
+                  <li>Single node: head == tail, deletion must update both</li>
+                  <li>Cycle detection — Floyd's tortoise and hare</li>
+                  <li>Losing head reference during traversal</li>
+                  <li>Inserting after last node vs inserting as new tail</li>
+                </ul>
+              </div>
+              <div class="info-section">
+                <div class="info-label">🚀 Real-world Applications</div>
+                <ul class="info-list">
+                  <li>Browser back/forward navigation (doubly)</li>
+                  <li>Music/video playlist management</li>
+                  <li>OS process scheduling queues</li>
+                  <li>Undo/redo stacks in editors</li>
+                  <li>Memory allocators (free list)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STACK -->
+      <div class="dsa-card" data-category="linear" data-name="stack lifo push pop">
+        <div class="card-header">
+          <div class="card-icon" style="background:#fffbea;">📚</div>
+          <div>
+            <div class="card-title">Stack</div>
+            <div class="card-subtitle">LIFO — Last In First Out</div>
+            <div class="card-tags">
+              <span class="tag green">Push O(1)</span>
+              <span class="tag green">Pop O(1)</span>
+              <span class="tag blue">LIFO</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="diagram-area">
+            <svg viewBox="0 0 280 130" width="100%" xmlns="http://www.w3.org/2000/svg">
+              <!-- Stack container -->
+              <rect x="80" y="10" width="120" height="110" rx="6" fill="none" stroke="#e2e1d8" stroke-width="2"/>
+              <!-- Items -->
+              <rect x="84" y="14" width="112" height="28" rx="4" fill="#fffbea" stroke="#f5a623" stroke-width="1.5"/>
+              <text x="140" y="33" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="13" font-weight="700" fill="#0f0e0b">TOP → 67</text>
+              <rect x="84" y="46" width="112" height="28" rx="4" fill="#fff" stroke="#e2e1d8" stroke-width="1"/>
+              <text x="140" y="65" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="13" font-weight="700" fill="#0f0e0b">23</text>
+              <rect x="84" y="78" width="112" height="28" rx="4" fill="#fff" stroke="#e2e1d8" stroke-width="1"/>
+              <text x="140" y="97" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="13" font-weight="700" fill="#0f0e0b">91</text>
+              <!-- Push arrow -->
+              <text x="220" y="20" font-family="JetBrains Mono,monospace" font-size="10" fill="#0dbf7a" font-weight="700">push()</text>
+              <line x1="215" y1="22" x2="200" y2="28" stroke="#0dbf7a" stroke-width="1.5" marker-end="url(#arr2)"/>
+              <!-- Pop arrow -->
+              <text x="14" y="20" font-family="JetBrains Mono,monospace" font-size="10" fill="#e84f2b" font-weight="700">pop()</text>
+              <line x1="58" y1="22" x2="80" y2="28" stroke="#e84f2b" stroke-width="1.5" marker-end="url(#arr2)"/>
+              <!-- Bottom label -->
+              <text x="140" y="125" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#7a7970">BOTTOM (oldest)</text>
+            </svg>
+          </div>
+          <table class="complexity-table">
+            <tr><th>Operation</th><th>Avg</th><th>Worst</th><th>Space</th></tr>
+            <tr><td>Push</td><td class="o-n1">O(1)</td><td class="o-n1">O(1)</td><td rowspan="4" class="o-n" style="vertical-align:middle">O(n)</td></tr>
+            <tr><td>Pop</td><td class="o-n1">O(1)</td><td class="o-n1">O(1)</td></tr>
+            <tr><td>Peek (Top)</td><td class="o-n1">O(1)</td><td class="o-n1">O(1)</td></tr>
+            <tr><td>Search</td><td class="o-n">O(n)</td><td class="o-n">O(n)</td></tr>
+          </table>
+        </div>
+        <button class="expand-toggle" onclick="toggleExpand(this)">
+          Details: Trade-offs, Corner Cases, Applications
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="expand-content">
+          <div class="two-col">
+            <div>
+              <div class="info-section">
+                <div class="info-label">✅ Strengths</div>
+                <ul class="info-list">
+                  <li>All primary operations are O(1)</li>
+                  <li>Simple, elegant abstraction for LIFO scenarios</li>
+                  <li>Can be built on arrays or linked lists</li>
+                </ul>
+              </div>
+              <div class="info-section">
+                <div class="info-label">⚠️ Weaknesses</div>
+                <ul class="info-list">
+                  <li>No random access to middle elements</li>
+                  <li>Stack overflow on deep recursion (call stack)</li>
+                  <li>Array-based: fixed capacity unless dynamic</li>
+                </ul>
+              </div>
+            </div>
+            <div>
+              <div class="info-section">
+                <div class="info-label">🐛 Corner Cases</div>
+                <ul class="info-list">
+                  <li>Underflow: pop() on empty stack</li>
+                  <li>Overflow: push() on full (bounded) stack</li>
+                  <li>Single element: push then pop leaves empty</li>
+                </ul>
+              </div>
+              <div class="info-section">
+                <div class="info-label">🚀 Applications</div>
+                <ul class="info-list">
+                  <li>Function call stack / recursion</li>
+                  <li>Expression parsing & balanced brackets</li>
+                  <li>DFS graph traversal</li>
+                  <li>Undo functionality in editors</li>
+                  <li>Backtracking algorithms</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- QUEUE -->
+      <div class="dsa-card" data-category="linear" data-name="queue fifo enqueue dequeue">
+        <div class="card-header">
+          <div class="card-icon" style="background:#eef4ff;">🚶</div>
+          <div>
+            <div class="card-title">Queue</div>
+            <div class="card-subtitle">FIFO — First In First Out</div>
+            <div class="card-tags">
+              <span class="tag green">Enqueue O(1)</span>
+              <span class="tag green">Dequeue O(1)</span>
+              <span class="tag blue">FIFO</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="diagram-area">
+            <svg viewBox="0 0 400 80" width="100%" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arr3" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+                  <path d="M0,0 L0,6 L8,3 z" fill="#0dbf7a"/>
+                </marker>
+                <marker id="arr4" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+                  <path d="M0,0 L0,6 L8,3 z" fill="#e84f2b"/>
+                </marker>
+              </defs>
+              <!-- Queue tube -->
+              <rect x="50" y="20" width="300" height="38" rx="8" fill="#f0f5ff" stroke="#1a6ef5" stroke-width="2"/>
+              <!-- Items inside -->
+              <rect x="55" y="24" width="60" height="30" rx="5" fill="#1a6ef5" opacity="0.15"/>
+              <text x="85" y="44" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="13" font-weight="700" fill="#0f0e0b">A</text>
+              <rect x="120" y="24" width="60" height="30" rx="5" fill="none"/>
+              <text x="150" y="44" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="13" font-weight="700" fill="#0f0e0b">B</text>
+              <rect x="185" y="24" width="60" height="30" rx="5" fill="none"/>
+              <text x="215" y="44" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="13" font-weight="700" fill="#0f0e0b">C</text>
+              <rect x="250" y="24" width="60" height="30" rx="5" fill="#fef0ec"/>
+              <text x="280" y="44" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="13" font-weight="700" fill="#b8320a">D</text>
+              <!-- Labels -->
+              <text x="85" y="72" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#1a6ef5" font-weight="700">FRONT</text>
+              <text x="280" y="72" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#e84f2b" font-weight="700">REAR</text>
+              <!-- Arrows -->
+              <line x1="20" y1="39" x2="48" y2="39" stroke="#e84f2b" stroke-width="2" marker-end="url(#arr4)"/>
+              <text x="10" y="25" font-family="JetBrains Mono,monospace" font-size="9" fill="#e84f2b" font-weight="700">enqueue</text>
+              <line x1="352" y1="39" x2="380" y2="39" stroke="#0dbf7a" stroke-width="2" marker-end="url(#arr3)"/>
+              <text x="355" y="25" font-family="JetBrains Mono,monospace" font-size="9" fill="#0dbf7a" font-weight="700">dequeue</text>
+            </svg>
+          </div>
+          <table class="complexity-table">
+            <tr><th>Operation</th><th>Avg</th><th>Worst</th><th>Space</th></tr>
+            <tr><td>Enqueue</td><td class="o-n1">O(1)</td><td class="o-n1">O(1)</td><td rowspan="3" class="o-n" style="vertical-align:middle">O(n)</td></tr>
+            <tr><td>Dequeue</td><td class="o-n1">O(1)</td><td class="o-n1">O(1)</td></tr>
+            <tr><td>Search</td><td class="o-n">O(n)</td><td class="o-n">O(n)</td></tr>
+          </table>
+        </div>
+        <button class="expand-toggle" onclick="toggleExpand(this)">
+          Details: Trade-offs, Corner Cases, Applications
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="expand-content">
+          <div class="two-col">
+            <div>
+              <div class="info-section">
+                <div class="info-label">✅ Strengths</div>
+                <ul class="info-list">
+                  <li>Fair ordering — first come, first served</li>
+                  <li>O(1) enqueue and dequeue operations</li>
+                  <li>Circular queue avoids wasted space</li>
+                </ul>
+              </div>
+              <div class="info-section">
+                <div class="info-label">⚠️ Weaknesses</div>
+                <ul class="info-list">
+                  <li>No random access to elements</li>
+                  <li>Array-based queue wastes space without circular impl</li>
+                  <li>Priority not handled — use Priority Queue instead</li>
+                </ul>
+              </div>
+            </div>
+            <div>
+              <div class="info-section">
+                <div class="info-label">🐛 Corner Cases</div>
+                <ul class="info-list">
+                  <li>Dequeue from empty queue — underflow</li>
+                  <li>Circular queue: full vs empty disambiguation</li>
+                  <li>Thread safety in concurrent environments</li>
+                </ul>
+              </div>
+              <div class="info-section">
+                <div class="info-label">🚀 Applications</div>
+                <ul class="info-list">
+                  <li>BFS graph traversal</li>
+                  <li>CPU task scheduling, print spoolers</li>
+                  <li>Async message queues (Kafka, RabbitMQ)</li>
+                  <li>Request handling in web servers</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end linear-grid -->
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       SECTION: TREE STRUCTURES
+  ════════════════════════════════════════ -->
+  <div class="section" id="sec-trees">
+    <div class="section-header">
+      <div class="section-icon" style="background:#e7faf2; font-size:22px;">🌳</div>
+      <div>
+        <div class="section-title">Tree Structures</div>
+        <div class="section-count">BST · AVL · Red-Black · Heap · Trie · Segment Tree</div>
+      </div>
+    </div>
+    <div class="cards-grid" id="tree-grid">
+
+      <!-- BST -->
+      <div class="dsa-card" data-category="tree" data-name="bst binary search tree">
+        <div class="card-header">
+          <div class="card-icon" style="background:#e7faf2;">🌲</div>
+          <div>
+            <div class="card-title">Binary Search Tree</div>
+            <div class="card-subtitle">Ordered binary tree, left &lt; root &lt; right</div>
+            <div class="card-tags">
+              <span class="tag green">Search O(log n)*</span>
+              <span class="tag yellow">Worst O(n)</span>
+              <span class="tag blue">Ordered</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="diagram-area">
+            <svg viewBox="0 0 340 160" width="100%" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="treeArr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                  <path d="M0,0 L0,6 L6,3 z" fill="#b0b0a0"/>
+                </marker>
+              </defs>
+              <!-- Edges -->
+              <line x1="170" y1="40" x2="90" y2="88" stroke="#e2e1d8" stroke-width="2"/>
+              <line x1="170" y1="40" x2="250" y2="88" stroke="#e2e1d8" stroke-width="2"/>
+              <line x1="90" y1="108" x2="50" y2="138" stroke="#e2e1d8" stroke-width="2"/>
+              <line x1="90" y1="108" x2="130" y2="138" stroke="#e2e1d8" stroke-width="2"/>
+              <line x1="250" y1="108" x2="210" y2="138" stroke="#e2e1d8" stroke-width="2"/>
+              <line x1="250" y1="108" x2="290" y2="138" stroke="#e2e1d8" stroke-width="2"/>
+              <!-- Nodes -->
+              <circle cx="170" cy="28" r="22" fill="#1a6ef5" opacity="0.12" stroke="#1a6ef5" stroke-width="2"/>
+              <text x="170" y="34" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="14" font-weight="700" fill="#0f0e0b">50</text>
+              <circle cx="90" cy="96" r="20" fill="#fff" stroke="#e2e1d8" stroke-width="2"/>
+              <text x="90" y="102" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="13" font-weight="700" fill="#0f0e0b">30</text>
+              <circle cx="250" cy="96" r="20" fill="#fff" stroke="#e2e1d8" stroke-width="2"/>
+              <text x="250" y="102" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="13" font-weight="700" fill="#0f0e0b">70</text>
+              <circle cx="50" cy="148" r="18" fill="#fff" stroke="#e2e1d8" stroke-width="2"/>
+              <text x="50" y="154" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" fill="#0f0e0b">20</text>
+              <circle cx="130" cy="148" r="18" fill="#fff" stroke="#e2e1d8" stroke-width="2"/>
+              <text x="130" y="154" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" fill="#0f0e0b">40</text>
+              <circle cx="210" cy="148" r="18" fill="#e7faf2" stroke="#0dbf7a" stroke-width="2"/>
+              <text x="210" y="154" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" fill="#0a7a4a">60</text>
+              <circle cx="290" cy="148" r="18" fill="#fff" stroke="#e2e1d8" stroke-width="2"/>
+              <text x="290" y="154" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" fill="#0f0e0b">80</text>
+              <!-- BST property labels -->
+              <text x="100" y="18" font-family="JetBrains Mono,monospace" font-size="9" fill="#7a7970">left &lt; 50</text>
+              <text x="210" y="18" font-family="JetBrains Mono,monospace" font-size="9" fill="#7a7970">right &gt; 50</text>
+            </svg>
+          </div>
+          <table class="complexity-table">
+            <tr><th>Operation</th><th>Average</th><th>Worst (skewed)</th><th>Space</th></tr>
+            <tr><td>Search</td><td class="o-logn">O(log n)</td><td class="o-n">O(n)</td><td rowspan="4" class="o-n" style="vertical-align:middle">O(n)</td></tr>
+            <tr><td>Insert</td><td class="o-logn">O(log n)</td><td class="o-n">O(n)</td></tr>
+            <tr><td>Delete</td><td class="o-logn">O(log n)</td><td class="o-n">O(n)</td></tr>
+            <tr><td>Min/Max</td><td class="o-logn">O(log n)</td><td class="o-n">O(n)</td></tr>
+          </table>
+        </div>
+        <button class="expand-toggle" onclick="toggleExpand(this)">
+          Details: Trade-offs, Corner Cases, Applications
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="expand-content">
+          <div class="two-col">
+            <div>
+              <div class="info-section">
+                <div class="info-label">✅ Strengths</div>
+                <ul class="info-list">
+                  <li>In-order traversal gives sorted sequence</li>
+                  <li>Efficient search, insert, delete — O(log n) balanced</li>
+                  <li>Easy to find predecessor/successor</li>
+                  <li>Dynamic — no fixed size</li>
+                </ul>
+              </div>
+              <div class="info-section">
+                <div class="info-label">⚠️ Weaknesses</div>
+                <ul class="info-list">
+                  <li>Degrades to O(n) on sorted input (becomes linked list)</li>
+                  <li>No self-balancing — use AVL/Red-Black for guarantees</li>
+                  <li>Complex deletion (3 cases: leaf, one child, two children)</li>
+                </ul>
+              </div>
+            </div>
+            <div>
+              <div class="info-section">
+                <div class="info-label">🐛 Corner Cases</div>
+                <ul class="info-list">
+                  <li>Empty tree operations</li>
+                  <li>Deleting node with two children — use in-order successor</li>
+                  <li>Duplicate keys — define consistent policy (left or right)</li>
+                  <li>Integer overflow in comparison</li>
+                </ul>
+              </div>
+              <div class="info-section">
+                <div class="info-label">🚀 Applications</div>
+                <ul class="info-list">
+                  <li>Symbol tables in compilers</li>
+                  <li>Database indexing (B-Trees are extensions)</li>
+                  <li>Priority queues (with self-balancing)</li>
+                  <li>Range queries and sorted key storage</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HEAP -->
+      <div class="dsa-card" data-category="tree" data-name="heap min max priority queue">
+        <div class="card-header">
+          <div class="card-icon" style="background:#fef0ec;">⛰️</div>
+          <div>
+            <div class="card-title">Heap (Min / Max)</div>
+            <div class="card-subtitle">Complete binary tree, heap property</div>
+            <div class="card-tags">
+              <span class="tag green">Insert O(log n)</span>
+              <span class="tag green">Extract-Min O(log n)</span>
+              <span class="tag yellow">Peek O(1)</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="diagram-area">
+            <svg viewBox="0 0 340 160" width="100%" xmlns="http://www.w3.org/2000/svg">
+              <!-- Min-Heap visualization -->
+              <text x="170" y="12" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#7a7970" font-weight="600">MIN-HEAP (root = minimum)</text>
+              <!-- Edges -->
+              <line x1="170" y1="48" x2="100" y2="90" stroke="#e2e1d8" stroke-width="2"/>
+              <line x1="170" y1="48" x2="240" y2="90" stroke="#e2e1d8" stroke-width="2"/>
+              <line x1="100" y1="110" x2="65" y2="142" stroke="#e2e1d8" stroke-width="2"/>
+              <line x1="100" y1="110" x2="135" y2="142" stroke="#e2e1d8" stroke-width="2"/>
+              <line x1="240" y1="110" x2="205" y2="142" stroke="#e2e1d8" stroke-width="2"/>
+              <line x1="240" y1="110" x2="275" y2="142" stroke="#e2e1d8" stroke-width="2"/>
+              <!-- Root -->
+              <circle cx="170" cy="36" r="22" fill="#e84f2b" opacity="0.15" stroke="#e84f2b" stroke-width="2"/>
+              <text x="170" y="42" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="13" font-weight="700" fill="#0f0e0b">1</text>
+              <!-- Level 2 -->
+              <circle cx="100" cy="100" r="20" fill="#fff" stroke="#e2e1d8" stroke-width="2"/>
+              <text x="100" y="106" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="13" font-weight="700" fill="#0f0e0b">4</text>
+              <circle cx="240" cy="100" r="20" fill="#fff" stroke="#e2e1d8" stroke-width="2"/>
+              <text x="240" y="106" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="13" font-weight="700" fill="#0f0e0b">5</text>
+              <!-- Level 3 -->
+              <circle cx="65" cy="150" r="17" fill="#fff" stroke="#e2e1d8" stroke-width="2"/>
+              <text x="65" y="156" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" fill="#0f0e0b">9</text>
+              <circle cx="135" cy="150" r="17" fill="#fff" stroke="#e2e1d8" stroke-width="2"/>
+              <text x="135" y="156" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" fill="#0f0e0b">7</text>
+              <circle cx="205" cy="150" r="17" fill="#fff" stroke="#e2e1d8" stroke-width="2"/>
+              <text x="205" y="156" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" fill="#0f0e0b">8</text>
+              <circle cx="275" cy="150" r="17" fill="#fff" stroke="#e2e1d8" stroke-width="2"/>
+              <text x="275" y="156" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" fill="#0f0e0b">6</text>
+              <!-- Array rep -->
+              <text x="170" y="175" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#7a7970">Array: [1, 4, 5, 9, 7, 8, 6]</text>
+            </svg>
+          </div>
+          <table class="complexity-table">
+            <tr><th>Operation</th><th>Time</th><th>Space</th></tr>
+            <tr><td>Insert (heapify up)</td><td class="o-logn">O(log n)</td><td rowspan="5" class="o-n" style="vertical-align:middle">O(n)</td></tr>
+            <tr><td>Extract Min/Max</td><td class="o-logn">O(log n)</td></tr>
+            <tr><td>Peek Min/Max</td><td class="o-n1">O(1)</td></tr>
+            <tr><td>Delete arbitrary</td><td class="o-logn">O(log n)</td></tr>
+            <tr><td>Build heap</td><td class="o-n">O(n)</td></tr>
+          </table>
+        </div>
+        <button class="expand-toggle" onclick="toggleExpand(this)">
+          Details: Trade-offs, Corner Cases, Applications
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="expand-content">
+          <div class="two-col">
+            <div>
+              <div class="info-section">
+                <div class="info-label">✅ Strengths</div>
+                <ul class="info-list">
+                  <li>O(1) peek at min/max — ideal for priority queues</li>
+                  <li>Can be stored compactly as an array (no pointers)</li>
+                  <li>Build heap from array in O(n) — better than n insertions</li>
+                  <li>Basis for HeapSort (O(n log n) in-place)</li>
+                </ul>
+              </div>
+              <div class="info-section">
+                <div class="info-label">⚠️ Weaknesses</div>
+                <ul class="info-list">
+                  <li>No O(log n) search for arbitrary element</li>
+                  <li>Not cache-friendly like arrays for certain ops</li>
+                  <li>Merging two heaps is O(n) unless Fibonacci heap</li>
+                </ul>
+              </div>
+            </div>
+            <div>
+              <div class="info-section">
+                <div class="info-label">🐛 Corner Cases</div>
+                <ul class="info-list">
+                  <li>Extract from empty heap — underflow</li>
+                  <li>Heapify direction: sift-up vs sift-down</li>
+                  <li>Equal priority elements — no guarantee on order</li>
+                  <li>0-indexed vs 1-indexed array formula change</li>
+                </ul>
+              </div>
+              <div class="info-section">
+                <div class="info-label">🚀 Applications</div>
+                <ul class="info-list">
+                  <li>Dijkstra's & A* shortest path algorithms</li>
+                  <li>Median maintenance (min + max heap combo)</li>
+                  <li>Top-K elements problems</li>
+                  <li>OS task schedulers</li>
+                  <li>Merge K sorted lists</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TRIE -->
+      <div class="dsa-card" data-category="tree" data-name="trie prefix tree autocomplete">
+        <div class="card-header">
+          <div class="card-icon" style="background:#fffbea;">🔠</div>
+          <div>
+            <div class="card-title">Trie (Prefix Tree)</div>
+            <div class="card-subtitle">Character-by-character tree for strings</div>
+            <div class="card-tags">
+              <span class="tag green">Search O(m)</span>
+              <span class="tag yellow">Space heavy</span>
+              <span class="tag blue">Strings</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="diagram-area">
+            <svg viewBox="0 0 360 160" width="100%" xmlns="http://www.w3.org/2000/svg">
+              <!-- Root -->
+              <circle cx="180" cy="20" r="16" fill="#f5a623" opacity="0.2" stroke="#f5a623" stroke-width="2"/>
+              <text x="180" y="26" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" font-weight="700" fill="#0f0e0b">root</text>
+              <!-- Level 1 edges and nodes -->
+              <line x1="180" y1="36" x2="80" y2="66" stroke="#e2e1d8" stroke-width="1.5"/>
+              <line x1="180" y1="36" x2="280" y2="66" stroke="#e2e1d8" stroke-width="1.5"/>
+              <circle cx="80" cy="76" r="16" fill="#fff" stroke="#e2e1d8" stroke-width="1.5"/>
+              <text x="80" y="82" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="13" font-weight="700" fill="#0f0e0b">a</text>
+              <circle cx="280" cy="76" r="16" fill="#fff" stroke="#e2e1d8" stroke-width="1.5"/>
+              <text x="280" y="82" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="13" font-weight="700" fill="#0f0e0b">b</text>
+              <!-- Level 2 -->
+              <line x1="80" y1="92" x2="44" y2="118" stroke="#e2e1d8" stroke-width="1.5"/>
+              <line x1="80" y1="92" x2="116" y2="118" stroke="#e2e1d8" stroke-width="1.5"/>
+              <line x1="280" y1="92" x2="248" y2="118" stroke="#e2e1d8" stroke-width="1.5"/>
+              <line x1="280" y1="92" x2="312" y2="118" stroke="#e2e1d8" stroke-width="1.5"/>
+              <circle cx="44" cy="128" r="15" fill="#e7faf2" stroke="#0dbf7a" stroke-width="2"/>
+              <text x="44" y="134" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" fill="#0a7a4a">p</text>
+              <circle cx="116" cy="128" r="15" fill="#fff" stroke="#e2e1d8" stroke-width="1.5"/>
+              <text x="116" y="134" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" fill="#0f0e0b">t</text>
+              <circle cx="248" cy="128" r="15" fill="#e7faf2" stroke="#0dbf7a" stroke-width="2"/>
+              <text x="248" y="134" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" fill="#0a7a4a">a</text>
+              <circle cx="312" cy="128" r="15" fill="#fff" stroke="#e2e1d8" stroke-width="1.5"/>
+              <text x="312" y="134" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" fill="#0f0e0b">e</text>
+              <!-- Word labels -->
+              <text x="44" y="155" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#0dbf7a">→"ap"</text>
+              <text x="116" y="155" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#7a7970">→"at"</text>
+              <text x="248" y="155" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#0dbf7a">→"ba"</text>
+              <text x="312" y="155" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#7a7970">→"be"</text>
+              <!-- Legend: green = end of word -->
+              <text x="180" y="155" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#7a7970">● = end of word</text>
+            </svg>
+          </div>
+          <table class="complexity-table">
+            <tr><th>Operation</th><th>Time</th><th>Space</th></tr>
+            <tr><td>Insert word</td><td class="o-n">O(m)</td><td rowspan="3" class="o-n" style="vertical-align:middle">O(n·m)*</td></tr>
+            <tr><td>Search word</td><td class="o-n">O(m)</td></tr>
+            <tr><td>Prefix search</td><td class="o-n">O(m)</td></tr>
+          </table>
+          <div style="font-size:0.78rem;color:var(--ink3);font-family:var(--mono);">m = word length, n = number of words</div>
+        </div>
+        <button class="expand-toggle" onclick="toggleExpand(this)">
+          Details: Trade-offs, Corner Cases, Applications
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="expand-content">
+          <div class="two-col">
+            <div>
+              <div class="info-section">
+                <div class="info-label">✅ Strengths</div>
+                <ul class="info-list">
+                  <li>O(m) search regardless of number of words</li>
+                  <li>Prefix matching is native and efficient</li>
+                  <li>Can enumerate all words with a given prefix</li>
+                  <li>Lexicographic ordering for free</li>
+                </ul>
+              </div>
+              <div class="info-section">
+                <div class="info-label">⚠️ Weaknesses</div>
+                <ul class="info-list">
+                  <li>High memory usage — up to 26 pointers per node</li>
+                  <li>Not cache-friendly; poor for small dictionaries</li>
+                  <li>Compressed tries (radix) needed for efficiency</li>
+                </ul>
+              </div>
+            </div>
+            <div>
+              <div class="info-section">
+                <div class="info-label">🐛 Corner Cases</div>
+                <ul class="info-list">
+                  <li>Empty string insertion — mark root as end-of-word</li>
+                  <li>One word is prefix of another: "app" vs "apple"</li>
+                  <li>Case sensitivity — normalize before insertion</li>
+                  <li>Unicode characters — not just 26 children</li>
+                </ul>
+              </div>
+              <div class="info-section">
+                <div class="info-label">🚀 Applications</div>
+                <ul class="info-list">
+                  <li>Autocomplete (search engines, IDEs)</li>
+                  <li>Spell checkers</li>
+                  <li>IP routing tables</li>
+                  <li>Word games (Boggle, Scrabble solvers)</li>
+                  <li>Contact name search on mobile</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       SECTION: HASH STRUCTURES
+  ════════════════════════════════════════ -->
+  <div class="section" id="sec-hash">
+    <div class="section-header">
+      <div class="section-icon" style="background:#fffbea; font-size:22px;">#️⃣</div>
+      <div>
+        <div class="section-title">Hashing</div>
+        <div class="section-count">Hash Table · Hash Map · Hash Set</div>
+      </div>
+    </div>
+    <div class="cards-grid" id="hash-grid">
+
+      <div class="dsa-card" data-category="hash" data-name="hash table map dictionary">
+        <div class="card-header">
+          <div class="card-icon" style="background:#fffbea;">🔑</div>
+          <div>
+            <div class="card-title">Hash Table / Hash Map</div>
+            <div class="card-subtitle">Key-value store via hash function</div>
+            <div class="card-tags">
+              <span class="tag green">Lookup O(1)*</span>
+              <span class="tag yellow">Worst O(n)</span>
+              <span class="tag blue">Unordered</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="diagram-area">
+            <svg viewBox="0 0 380 120" width="100%" xmlns="http://www.w3.org/2000/svg">
+              <!-- Keys -->
+              <rect x="10" y="20" width="70" height="22" rx="4" fill="#fffbea" stroke="#f5a623" stroke-width="1.5"/>
+              <text x="45" y="35" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#0f0e0b">"name"</text>
+              <rect x="10" y="52" width="70" height="22" rx="4" fill="#fffbea" stroke="#f5a623" stroke-width="1.5"/>
+              <text x="45" y="67" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#0f0e0b">"age"</text>
+              <rect x="10" y="84" width="70" height="22" rx="4" fill="#fffbea" stroke="#f5a623" stroke-width="1.5"/>
+              <text x="45" y="99" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#0f0e0b">"city"</text>
+              <!-- Hash fn box -->
+              <rect x="110" y="48" width="80" height="32" rx="8" fill="#1a6ef5" opacity="0.15" stroke="#1a6ef5" stroke-width="2"/>
+              <text x="150" y="66" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" font-weight="700" fill="#1a4aaa">hash()</text>
+              <!-- Arrows to hash -->
+              <line x1="80" y1="31" x2="110" y2="58" stroke="#e2e1d8" stroke-width="1.5"/>
+              <line x1="80" y1="63" x2="110" y2="64" stroke="#e2e1d8" stroke-width="1.5"/>
+              <line x1="80" y1="95" x2="110" y2="70" stroke="#e2e1d8" stroke-width="1.5"/>
+              <!-- Bucket array -->
+              <rect x="220" y="10" width="140" height="100" rx="6" fill="none" stroke="#e2e1d8" stroke-width="1.5"/>
+              <text x="290" y="7" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#7a7970">Buckets</text>
+              <rect x="222" y="12" width="136" height="18" rx="3" fill="#fff" stroke="#e2e1d8" stroke-width="1"/>
+              <text x="230" y="25" font-family="JetBrains Mono,monospace" font-size="9" fill="#7a7970">[0]</text>
+              <text x="248" y="25" font-family="JetBrains Mono,monospace" font-size="9" fill="#0f0e0b">→ "Alice"</text>
+              <rect x="222" y="34" width="136" height="18" rx="3" fill="#e7faf2" stroke="#0dbf7a" stroke-width="1"/>
+              <text x="230" y="47" font-family="JetBrains Mono,monospace" font-size="9" fill="#7a7970">[1]</text>
+              <text x="248" y="47" font-family="JetBrains Mono,monospace" font-size="9" fill="#0f0e0b">→ 28</text>
+              <rect x="222" y="56" width="136" height="18" rx="3" fill="#fff" stroke="#e2e1d8" stroke-width="1"/>
+              <text x="230" y="69" font-family="JetBrains Mono,monospace" font-size="9" fill="#7a7970">[2]</text>
+              <rect x="222" y="78" width="136" height="18" rx="3" fill="#e7faf2" stroke="#0dbf7a" stroke-width="1"/>
+              <text x="230" y="91" font-family="JetBrains Mono,monospace" font-size="9" fill="#7a7970">[3]</text>
+              <text x="248" y="91" font-family="JetBrains Mono,monospace" font-size="9" fill="#0f0e0b">→ "Delhi"</text>
+              <!-- Arrow from hash to buckets -->
+              <line x1="190" y1="64" x2="218" y2="64" stroke="#1a6ef5" stroke-width="1.5" marker-end="url(#arr2)"/>
+            </svg>
+          </div>
+          <table class="complexity-table">
+            <tr><th>Operation</th><th>Average</th><th>Worst</th><th>Space</th></tr>
+            <tr><td>Insert</td><td class="o-n1">O(1)</td><td class="o-n">O(n)</td><td rowspan="3" class="o-n" style="vertical-align:middle">O(n)</td></tr>
+            <tr><td>Search</td><td class="o-n1">O(1)</td><td class="o-n">O(n)</td></tr>
+            <tr><td>Delete</td><td class="o-n1">O(1)</td><td class="o-n">O(n)</td></tr>
+          </table>
+        </div>
+        <button class="expand-toggle" onclick="toggleExpand(this)">
+          Details: Trade-offs, Corner Cases, Applications
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="expand-content">
+          <div class="two-col">
+            <div>
+              <div class="info-section">
+                <div class="info-label">✅ Strengths</div>
+                <ul class="info-list">
+                  <li>Amortized O(1) for all primary operations</li>
+                  <li>Flexible key types (strings, objects)</li>
+                  <li>No ordering overhead</li>
+                </ul>
+              </div>
+              <div class="info-section">
+                <div class="info-label">⚠️ Weaknesses</div>
+                <ul class="info-list">
+                  <li>Collisions degrade performance → O(n) worst case</li>
+                  <li>No ordering — can't find min/max or range queries</li>
+                  <li>Higher memory than sorted alternatives</li>
+                  <li>Hash function quality is critical</li>
+                </ul>
+              </div>
+            </div>
+            <div>
+              <div class="info-section">
+                <div class="info-label">🐛 Corner Cases</div>
+                <ul class="info-list">
+                  <li>Hash collision — chaining or open addressing</li>
+                  <li>Rehashing when load factor exceeds threshold (~0.75)</li>
+                  <li>Mutable keys — object used as key then mutated</li>
+                  <li>Null key handling varies by language</li>
+                  <li>Infinite loops in open addressing if full</li>
+                </ul>
+              </div>
+              <div class="info-section">
+                <div class="info-label">🚀 Applications</div>
+                <ul class="info-list">
+                  <li>Database indexes, caches (Redis)</li>
+                  <li>Counting frequencies, anagram detection</li>
+                  <li>Two-sum problems, subarray sums</li>
+                  <li>Memoization in dynamic programming</li>
+                  <li>Language runtime symbol tables</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       SECTION: GRAPHS
+  ════════════════════════════════════════ -->
+  <div class="section" id="sec-graphs">
+    <div class="section-header">
+      <div class="section-icon" style="background:#eef4ff; font-size:22px;">🕸️</div>
+      <div>
+        <div class="section-title">Graph Structures</div>
+        <div class="section-count">Adjacency List · Matrix · Directed · Undirected</div>
+      </div>
+    </div>
+    <div class="cards-grid" id="graph-ds-grid">
+
+      <div class="dsa-card" data-category="graph" data-name="graph adjacency list matrix directed undirected weighted">
+        <div class="card-header">
+          <div class="card-icon" style="background:#eef4ff;">🕸️</div>
+          <div>
+            <div class="card-title">Graph</div>
+            <div class="card-subtitle">Vertices (nodes) connected by edges</div>
+            <div class="card-tags">
+              <span class="tag blue">Directed/Undirected</span>
+              <span class="tag yellow">Weighted/Unweighted</span>
+              <span class="tag">Cyclic/Acyclic</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="diagram-area">
+            <svg viewBox="0 0 360 130" width="100%" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="gArr" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto">
+                  <path d="M0,0 L0,6 L7,3 z" fill="#1a6ef5"/>
+                </marker>
+              </defs>
+              <!-- Nodes -->
+              <circle cx="80" cy="50" r="22" fill="#eef4ff" stroke="#1a6ef5" stroke-width="2"/>
+              <text x="80" y="56" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="13" font-weight="700" fill="#0f0e0b">A</text>
+              <circle cx="200" cy="25" r="22" fill="#fff" stroke="#e2e1d8" stroke-width="2"/>
+              <text x="200" y="31" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="13" font-weight="700" fill="#0f0e0b">B</text>
+              <circle cx="310" cy="50" r="22" fill="#fff" stroke="#e2e1d8" stroke-width="2"/>
+              <text x="310" y="56" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="13" font-weight="700" fill="#0f0e0b">C</text>
+              <circle cx="140" cy="100" r="22" fill="#fff" stroke="#e2e1d8" stroke-width="2"/>
+              <text x="140" y="106" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="13" font-weight="700" fill="#0f0e0b">D</text>
+              <circle cx="260" cy="100" r="22" fill="#e7faf2" stroke="#0dbf7a" stroke-width="2"/>
+              <text x="260" y="106" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="13" font-weight="700" fill="#0a7a4a">E</text>
+              <!-- Edges with weights -->
+              <line x1="101" y1="58" x2="118" y2="90" stroke="#e2e1d8" stroke-width="2"/>
+              <text x="100" y="80" font-family="JetBrains Mono,monospace" font-size="9" fill="#7a7970">4</text>
+              <line x1="96" y1="38" x2="178" y2="30" stroke="#e2e1d8" stroke-width="2"/>
+              <text x="135" y="27" font-family="JetBrains Mono,monospace" font-size="9" fill="#7a7970">2</text>
+              <line x1="220" y1="35" x2="292" y2="46" stroke="#e2e1d8" stroke-width="2"/>
+              <text x="258" y="34" font-family="JetBrains Mono,monospace" font-size="9" fill="#7a7970">5</text>
+              <line x1="162" y1="100" x2="238" y2="100" stroke="#e2e1d8" stroke-width="2"/>
+              <text x="200" y="114" font-family="JetBrains Mono,monospace" font-size="9" fill="#7a7970">1</text>
+              <line x1="288" y1="66" x2="278" y2="80" stroke="#e2e1d8" stroke-width="2"/>
+              <text x="294" y="78" font-family="JetBrains Mono,monospace" font-size="9" fill="#7a7970">3</text>
+              <line x1="200" y1="47" x2="160" y2="80" stroke="#e2e1d8" stroke-width="2"/>
+              <text x="183" y="68" font-family="JetBrains Mono,monospace" font-size="9" fill="#7a7970">6</text>
+            </svg>
+          </div>
+          <table class="complexity-table">
+            <tr><th>Representation</th><th>Space</th><th>Add Edge</th><th>Has Edge?</th></tr>
+            <tr><td>Adjacency List</td><td class="o-n">O(V+E)</td><td class="o-n1">O(1)</td><td class="o-n">O(deg)</td></tr>
+            <tr><td>Adjacency Matrix</td><td class="o-n2">O(V²)</td><td class="o-n1">O(1)</td><td class="o-n1">O(1)</td></tr>
+          </table>
+        </div>
+        <button class="expand-toggle" onclick="toggleExpand(this)">
+          Details: Trade-offs, Corner Cases, Applications
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="expand-content">
+          <div class="two-col">
+            <div>
+              <div class="info-section">
+                <div class="info-label">📋 List vs Matrix</div>
+                <ul class="info-list">
+                  <li><b>Adj List:</b> Best for sparse graphs (E &lt;&lt; V²) — social networks</li>
+                  <li><b>Adj Matrix:</b> Best for dense graphs, fast edge lookup</li>
+                  <li>List: O(V+E) space — efficient memory</li>
+                  <li>Matrix: O(V²) space — wastes memory on sparse</li>
+                </ul>
+              </div>
+            </div>
+            <div>
+              <div class="info-section">
+                <div class="info-label">🐛 Corner Cases</div>
+                <ul class="info-list">
+                  <li>Self-loops: edge from vertex to itself</li>
+                  <li>Multiple edges between same pair (multigraph)</li>
+                  <li>Disconnected components — BFS/DFS may miss nodes</li>
+                  <li>Negative weight cycles in shortest path</li>
+                </ul>
+              </div>
+              <div class="info-section">
+                <div class="info-label">🚀 Applications</div>
+                <ul class="info-list">
+                  <li>Social networks (Facebook, LinkedIn)</li>
+                  <li>Navigation / Google Maps</li>
+                  <li>Internet routing protocols</li>
+                  <li>Dependency resolution (npm, Maven)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       SECTION: SORTING ALGORITHMS
+  ════════════════════════════════════════ -->
+  <div class="section" id="sec-sort">
+    <div class="section-header">
+      <div class="section-icon" style="background:#fef0ec; font-size:22px;">↕️</div>
+      <div>
+        <div class="section-title">Sorting Algorithms</div>
+        <div class="section-count">Bubble · Merge · Quick · Heap · Counting · Radix · Tim</div>
+      </div>
+    </div>
+
+    <div id="sort-grid">
+
+      <!-- Merge Sort -->
+      <div class="algo-card" data-category="sort" data-name="merge sort divide conquer stable">
+        <div class="algo-header" onclick="toggleAlgo(this)">
+          <span class="algo-num">01</span>
+          <span class="algo-title">Merge Sort</span>
+          <div class="algo-chips">
+            <span class="tag blue">Stable</span>
+            <span class="tag green">O(n log n)</span>
+            <span class="tag yellow">O(n) space</span>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="algo-body">
+          <div class="two-col">
+            <div>
+              <table class="complexity-table">
+                <tr><th>Case</th><th>Time</th><th>Space</th></tr>
+                <tr><td>Best</td><td class="o-nlogn">O(n log n)</td><td rowspan="3" class="o-n" style="vertical-align:middle">O(n)</td></tr>
+                <tr><td>Average</td><td class="o-nlogn">O(n log n)</td></tr>
+                <tr><td>Worst</td><td class="o-nlogn">O(n log n)</td></tr>
+              </table>
+              <br>
+              <div class="pseudocode">
+<span class="kw">function</span> <span class="fn">mergeSort</span>(arr):
+  <span class="kw">if</span> len(arr) &lt;= 1: <span class="kw">return</span> arr
+  mid = len(arr) / 2
+  left  = <span class="fn">mergeSort</span>(arr[0..mid])
+  right = <span class="fn">mergeSort</span>(arr[mid..])
+  <span class="kw">return</span> <span class="fn">merge</span>(left, right)
+
+<span class="kw">function</span> <span class="fn">merge</span>(L, R):
+  result = []
+  i = j = 0
+  <span class="kw">while</span> i &lt; len(L) <span class="kw">and</span> j &lt; len(R):
+    <span class="kw">if</span> L[i] &lt;= R[j]: result.append(L[i++])
+    <span class="kw">else</span>: result.append(R[j++])
+  <span class="kw">return</span> result + remaining</div>
+            </div>
+            <div>
+              <div class="info-section">
+                <div class="info-label">✅ Strengths</div>
+                <ul class="info-list">
+                  <li>Guaranteed O(n log n) — no bad inputs</li>
+                  <li>Stable sort — equal elements keep original order</li>
+                  <li>Works well for linked lists (no random access needed)</li>
+                  <li>Can be parallelized (divide-and-conquer)</li>
+                </ul>
+              </div>
+              <div class="info-section">
+                <div class="info-label">⚠️ Trade-offs</div>
+                <ul class="info-list">
+                  <li>O(n) extra space — not in-place</li>
+                  <li>Slower than quicksort in practice due to memory allocation</li>
+                  <li>Not cache-friendly for large arrays</li>
+                </ul>
+              </div>
+              <div class="info-section">
+                <div class="info-label">🐛 Corner Cases</div>
+                <ul class="info-list">
+                  <li>Empty or single-element array — base case</li>
+                  <li>All equal elements — still O(n log n), stable</li>
+                  <li>Already sorted array — no benefit over quicksort</li>
+                </ul>
+              </div>
+              <div class="info-section">
+                <div class="info-label">🚀 Applications</div>
+                <ul class="info-list">
+                  <li>Sorting linked lists</li>
+                  <li>External sorting (data too large for RAM)</li>
+                  <li>Stable sort in Java (Arrays.sort for objects), Python</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Sort -->
+      <div class="algo-card" data-category="sort" data-name="quick sort partition pivot">
+        <div class="algo-header" onclick="toggleAlgo(this)">
+          <span class="algo-num">02</span>
+          <span class="algo-title">Quick Sort</span>
+          <div class="algo-chips">
+            <span class="tag red">Unstable</span>
+            <span class="tag green">O(n log n) avg</span>
+            <span class="tag">In-place</span>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="algo-body">
+          <div class="two-col">
+            <div>
+              <table class="complexity-table">
+                <tr><th>Case</th><th>Time</th><th>Space</th></tr>
+                <tr><td>Best</td><td class="o-nlogn">O(n log n)</td><td rowspan="3" class="o-logn" style="vertical-align:middle">O(log n)*</td></tr>
+                <tr><td>Average</td><td class="o-nlogn">O(n log n)</td></tr>
+                <tr><td>Worst</td><td class="o-n2">O(n²)</td></tr>
+              </table>
+              <br>
+              <div class="pseudocode">
+<span class="kw">function</span> <span class="fn">quickSort</span>(arr, low, high):
+  <span class="kw">if</span> low &lt; high:
+    p = <span class="fn">partition</span>(arr, low, high)
+    <span class="fn">quickSort</span>(arr, low, p-1)
+    <span class="fn">quickSort</span>(arr, p+1, high)
+
+<span class="kw">function</span> <span class="fn">partition</span>(arr, low, high):
+  pivot = arr[high] <span class="cm">// last element as pivot</span>
+  i = low - 1
+  <span class="kw">for</span> j = low <span class="kw">to</span> high-1:
+    <span class="kw">if</span> arr[j] &lt;= pivot:
+      i++; <span class="fn">swap</span>(arr[i], arr[j])
+  <span class="fn">swap</span>(arr[i+1], arr[high])
+  <span class="kw">return</span> i + 1</div>
+            </div>
+            <div>
+              <div class="info-section">
+                <div class="info-label">✅ Strengths</div>
+                <ul class="info-list">
+                  <li>In-place — O(log n) space (recursion stack)</li>
+                  <li>Excellent cache performance — works on contiguous memory</li>
+                  <li>Fastest in practice for most random inputs</li>
+                </ul>
+              </div>
+              <div class="info-section">
+                <div class="info-label">⚠️ Trade-offs</div>
+                <ul class="info-list">
+                  <li>Worst case O(n²) on sorted/reverse-sorted — use random pivot</li>
+                  <li>Not stable — relative order of equal elements not preserved</li>
+                  <li>Difficult to implement correctly without bugs</li>
+                </ul>
+              </div>
+              <div class="info-section">
+                <div class="info-label">🐛 Corner Cases</div>
+                <ul class="info-list">
+                  <li>All same elements — always triggers worst pivot split</li>
+                  <li>Already sorted input with last-element pivot → O(n²)</li>
+                  <li>Median-of-three pivot selection mitigates worst case</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Heap Sort -->
+      <div class="algo-card" data-category="sort" data-name="heap sort in-place">
+        <div class="algo-header" onclick="toggleAlgo(this)">
+          <span class="algo-num">03</span>
+          <span class="algo-title">Heap Sort</span>
+          <div class="algo-chips">
+            <span class="tag red">Unstable</span>
+            <span class="tag green">O(n log n)</span>
+            <span class="tag">In-place</span>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="algo-body">
+          <div class="two-col">
+            <div>
+              <table class="complexity-table">
+                <tr><th>Case</th><th>Time</th><th>Space</th></tr>
+                <tr><td>Best</td><td class="o-nlogn">O(n log n)</td><td rowspan="3" class="o-n1" style="vertical-align:middle">O(1)</td></tr>
+                <tr><td>Average</td><td class="o-nlogn">O(n log n)</td></tr>
+                <tr><td>Worst</td><td class="o-nlogn">O(n log n)</td></tr>
+              </table>
+            </div>
+            <div>
+              <div class="info-section">
+                <div class="info-label">Key Idea</div>
+                <ul class="info-list">
+                  <li>Build max-heap from array in O(n)</li>
+                  <li>Repeatedly extract max (swap root to end, heapify)</li>
+                  <li>Guaranteed O(n log n) worst case unlike QuickSort</li>
+                  <li>Not used much in practice — poor cache performance</li>
+                </ul>
+              </div>
+              <div class="info-section">
+                <div class="info-label">🐛 Corner Cases</div>
+                <ul class="info-list">
+                  <li>Single element — trivially sorted</li>
+                  <li>All equal elements — still O(n log n)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bubble Sort -->
+      <div class="algo-card" data-category="sort" data-name="bubble sort simple naive">
+        <div class="algo-header" onclick="toggleAlgo(this)">
+          <span class="algo-num">04</span>
+          <span class="algo-title">Bubble Sort</span>
+          <div class="algo-chips">
+            <span class="tag blue">Stable</span>
+            <span class="tag red">O(n²)</span>
+            <span class="tag">Educational</span>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="algo-body">
+          <div class="two-col">
+            <div>
+              <table class="complexity-table">
+                <tr><th>Case</th><th>Time</th><th>Space</th></tr>
+                <tr><td>Best</td><td class="o-n">O(n)</td><td rowspan="3" class="o-n1" style="vertical-align:middle">O(1)</td></tr>
+                <tr><td>Average</td><td class="o-n2">O(n²)</td></tr>
+                <tr><td>Worst</td><td class="o-n2">O(n²)</td></tr>
+              </table>
+            </div>
+            <div>
+              <div class="info-section">
+                <div class="info-label">Key Idea</div>
+                <ul class="info-list">
+                  <li>Repeatedly swap adjacent out-of-order elements</li>
+                  <li>Best case O(n) with early termination flag</li>
+                  <li>Simple to implement but terrible for large n</li>
+                  <li>Use only for nearly-sorted small arrays</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Counting / Radix -->
+      <div class="algo-card" data-category="sort" data-name="counting sort radix linear non-comparison">
+        <div class="algo-header" onclick="toggleAlgo(this)">
+          <span class="algo-num">05</span>
+          <span class="algo-title">Counting Sort / Radix Sort</span>
+          <div class="algo-chips">
+            <span class="tag blue">Stable</span>
+            <span class="tag green">O(n+k)</span>
+            <span class="tag blue">Non-comparison</span>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="algo-body">
+          <div class="two-col">
+            <div>
+              <table class="complexity-table">
+                <tr><th>Algorithm</th><th>Time</th><th>Space</th></tr>
+                <tr><td>Counting Sort</td><td class="o-n">O(n+k)</td><td class="o-n">O(k)</td></tr>
+                <tr><td>Radix Sort</td><td class="o-n">O(d·(n+k))</td><td class="o-n">O(n+k)</td></tr>
+                <tr><td>Bucket Sort</td><td class="o-n">O(n+k)</td><td class="o-n">O(n+k)</td></tr>
+              </table>
+            </div>
+            <div>
+              <div class="info-section">
+                <div class="info-label">Key Idea</div>
+                <ul class="info-list">
+                  <li>Break the O(n log n) comparison barrier</li>
+                  <li>Counting: count occurrences, reconstruct</li>
+                  <li>Radix: sort digit by digit (LSD or MSD)</li>
+                  <li>Only works for integer-like keys with bounded range</li>
+                </ul>
+              </div>
+              <div class="info-section">
+                <div class="info-label">🐛 Corner Cases</div>
+                <ul class="info-list">
+                  <li>Counting sort: huge k wastes memory (k=max value)</li>
+                  <li>Negative numbers require offset transformation</li>
+                  <li>Radix: need stable sort for each digit pass</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end sort-grid -->
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       SECTION: SEARCHING ALGORITHMS
+  ════════════════════════════════════════ -->
+  <div class="section" id="sec-search">
+    <div class="section-header">
+      <div class="section-icon" style="background:#e7faf2; font-size:22px;">🔍</div>
+      <div>
+        <div class="section-title">Searching Algorithms</div>
+        <div class="section-count">Linear · Binary · BFS · DFS · Interpolation</div>
+      </div>
+    </div>
+    <div id="search-grid">
+
+      <div class="algo-card" data-category="search" data-name="binary search sorted logarithmic">
+        <div class="algo-header" onclick="toggleAlgo(this)">
+          <span class="algo-num">01</span>
+          <span class="algo-title">Binary Search</span>
+          <div class="algo-chips">
+            <span class="tag green">O(log n)</span>
+            <span class="tag blue">Sorted array required</span>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="algo-body">
+          <div class="two-col">
+            <div>
+              <table class="complexity-table">
+                <tr><th>Case</th><th>Time</th><th>Space</th></tr>
+                <tr><td>Best</td><td class="o-n1">O(1)</td><td rowspan="3" class="o-n1" style="vertical-align:middle">O(1)</td></tr>
+                <tr><td>Average</td><td class="o-logn">O(log n)</td></tr>
+                <tr><td>Worst</td><td class="o-logn">O(log n)</td></tr>
+              </table>
+              <br>
+              <div class="pseudocode">
+<span class="kw">function</span> <span class="fn">binarySearch</span>(arr, target):
+  low = 0; high = len(arr) - 1
+  <span class="kw">while</span> low &lt;= high:
+    mid = low + (high - low) / 2
+    <span class="kw">if</span> arr[mid] == target: <span class="kw">return</span> mid
+    <span class="kw">elif</span> arr[mid] &lt; target: low = mid + 1
+    <span class="kw">else</span>: high = mid - 1
+  <span class="kw">return</span> -1 <span class="cm">// not found</span></div>
+            </div>
+            <div>
+              <div class="info-section">
+                <div class="info-label">✅ Strengths</div>
+                <ul class="info-list">
+                  <li>O(log n) — halves search space each iteration</li>
+                  <li>Very simple iterative implementation</li>
+                  <li>O(1) space in iterative form</li>
+                </ul>
+              </div>
+              <div class="info-section">
+                <div class="info-label">🐛 Corner Cases</div>
+                <ul class="info-list">
+                  <li>Integer overflow: use mid = low + (high-low)/2</li>
+                  <li>Empty array — low > high at start</li>
+                  <li>All same elements with target not equal</li>
+                  <li>Duplicate elements — find leftmost/rightmost variant</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="algo-card" data-category="search" data-name="bfs breadth first search level order">
+        <div class="algo-header" onclick="toggleAlgo(this)">
+          <span class="algo-num">02</span>
+          <span class="algo-title">BFS — Breadth-First Search</span>
+          <div class="algo-chips">
+            <span class="tag green">O(V+E)</span>
+            <span class="tag blue">Shortest path (unweighted)</span>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="algo-body">
+          <div class="two-col">
+            <div>
+              <table class="complexity-table">
+                <tr><th>Metric</th><th>Value</th></tr>
+                <tr><td>Time</td><td class="o-n">O(V+E)</td></tr>
+                <tr><td>Space</td><td class="o-n">O(V)</td></tr>
+              </table>
+              <br>
+              <div class="pseudocode">
+<span class="kw">function</span> <span class="fn">bfs</span>(graph, start):
+  visited = {start}
+  queue = [start]
+  <span class="kw">while</span> queue:
+    node = queue.dequeue()
+    <span class="fn">process</span>(node)
+    <span class="kw">for</span> neighbor <span class="kw">in</span> graph[node]:
+      <span class="kw">if</span> neighbor <span class="kw">not in</span> visited:
+        visited.add(neighbor)
+        queue.enqueue(neighbor)</div>
+            </div>
+            <div>
+              <div class="info-section">
+                <div class="info-label">✅ When to use BFS</div>
+                <ul class="info-list">
+                  <li>Shortest path in unweighted graph</li>
+                  <li>Level-order tree traversal</li>
+                  <li>Finding all nodes within k distance</li>
+                  <li>Web crawlers, social network connections</li>
+                </ul>
+              </div>
+              <div class="info-section">
+                <div class="info-label">⚠️ Trade-offs vs DFS</div>
+                <ul class="info-list">
+                  <li>Uses more memory (entire level in queue)</li>
+                  <li>Better for shortest paths; DFS better for cycle detection</li>
+                  <li>Not suitable for very deep/wide graphs (memory)</li>
+                </ul>
+              </div>
+              <div class="info-section">
+                <div class="info-label">🐛 Corner Cases</div>
+                <ul class="info-list">
+                  <li>Disconnected graph — BFS from one node won't reach all</li>
+                  <li>Self-loops — mark visited before adding to queue</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="algo-card" data-category="search" data-name="dfs depth first search recursive backtrack">
+        <div class="algo-header" onclick="toggleAlgo(this)">
+          <span class="algo-num">03</span>
+          <span class="algo-title">DFS — Depth-First Search</span>
+          <div class="algo-chips">
+            <span class="tag green">O(V+E)</span>
+            <span class="tag blue">Backtracking / Cycles</span>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="algo-body">
+          <div class="two-col">
+            <div>
+              <table class="complexity-table">
+                <tr><th>Metric</th><th>Value</th></tr>
+                <tr><td>Time</td><td class="o-n">O(V+E)</td></tr>
+                <tr><td>Space (recursive)</td><td class="o-n">O(V)</td></tr>
+              </table>
+              <br>
+              <div class="pseudocode">
+<span class="kw">function</span> <span class="fn">dfs</span>(graph, node, visited):
+  visited.add(node)
+  <span class="fn">process</span>(node)
+  <span class="kw">for</span> neighbor <span class="kw">in</span> graph[node]:
+    <span class="kw">if</span> neighbor <span class="kw">not in</span> visited:
+      <span class="fn">dfs</span>(graph, neighbor, visited)</div>
+            </div>
+            <div>
+              <div class="info-section">
+                <div class="info-label">✅ When to use DFS</div>
+                <ul class="info-list">
+                  <li>Detecting cycles in a graph</li>
+                  <li>Topological sorting (DAGs)</li>
+                  <li>Finding strongly connected components</li>
+                  <li>Maze solving, puzzles, backtracking</li>
+                  <li>Tree traversals (pre/in/post order)</li>
+                </ul>
+              </div>
+              <div class="info-section">
+                <div class="info-label">🐛 Corner Cases</div>
+                <ul class="info-list">
+                  <li>Stack overflow on very deep graphs (use iterative)</li>
+                  <li>Must mark visited BEFORE recursing (not after)</li>
+                  <li>Back edges indicate cycles in directed graphs</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       SECTION: GRAPH ALGORITHMS
+  ════════════════════════════════════════ -->
+  <div class="section" id="sec-graph-algo">
+    <div class="section-header">
+      <div class="section-icon" style="background:#eef4ff; font-size:22px;">🗺️</div>
+      <div>
+        <div class="section-title">Graph Algorithms</div>
+        <div class="section-count">Dijkstra · Bellman-Ford · Floyd-Warshall · Kruskal · Prim · Topological Sort</div>
+      </div>
+    </div>
+    <div id="graph-algo-grid">
+
+      <div class="algo-card" data-category="graph" data-name="dijkstra shortest path weighted graph">
+        <div class="algo-header" onclick="toggleAlgo(this)">
+          <span class="algo-num">01</span>
+          <span class="algo-title">Dijkstra's Algorithm</span>
+          <div class="algo-chips">
+            <span class="tag green">O((V+E) log V)</span>
+            <span class="tag blue">Shortest Path</span>
+            <span class="tag yellow">No negative edges</span>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="algo-body">
+          <div class="two-col">
+            <div>
+              <table class="complexity-table">
+                <tr><th>Implementation</th><th>Time</th><th>Space</th></tr>
+                <tr><td>Min-Heap + Adj List</td><td class="o-nlogn">O((V+E) log V)</td><td class="o-n">O(V)</td></tr>
+                <tr><td>Array (simple)</td><td class="o-n2">O(V²)</td><td class="o-n">O(V)</td></tr>
+              </table>
+            </div>
+            <div>
+              <div class="info-section">
+                <div class="info-label">✅ Key Points</div>
+                <ul class="info-list">
+                  <li>Greedy: always process closest unvisited node</li>
+                  <li>Uses min-heap (priority queue) for efficiency</li>
+                  <li>Finds shortest path from one source to all vertices</li>
+                  <li>Fails with negative edge weights — use Bellman-Ford</li>
+                </ul>
+              </div>
+              <div class="info-section">
+                <div class="info-label">🐛 Corner Cases</div>
+                <ul class="info-list">
+                  <li>Negative weights → incorrect results (use Bellman-Ford)</li>
+                  <li>Disconnected graph → some nodes stay at ∞</li>
+                  <li>Multiple shortest paths — algorithm finds one</li>
+                </ul>
+              </div>
+              <div class="info-section">
+                <div class="info-label">🚀 Applications</div>
+                <ul class="info-list">
+                  <li>GPS navigation (Google Maps, Apple Maps)</li>
+                  <li>Network routing (OSPF protocol)</li>
+                  <li>Game AI pathfinding (with A*)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="algo-card" data-category="graph" data-name="bellman ford negative weights shortest path">
+        <div class="algo-header" onclick="toggleAlgo(this)">
+          <span class="algo-num">02</span>
+          <span class="algo-title">Bellman-Ford Algorithm</span>
+          <div class="algo-chips">
+            <span class="tag yellow">O(V·E)</span>
+            <span class="tag green">Handles negative edges</span>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="algo-body">
+          <div class="two-col">
+            <div>
+              <table class="complexity-table">
+                <tr><th>Metric</th><th>Value</th></tr>
+                <tr><td>Time</td><td class="o-n2">O(V · E)</td></tr>
+                <tr><td>Space</td><td class="o-n">O(V)</td></tr>
+              </table>
+            </div>
+            <div>
+              <div class="info-section">
+                <div class="info-label">Key Idea</div>
+                <ul class="info-list">
+                  <li>Relax all edges V-1 times</li>
+                  <li>Handles negative weight edges (unlike Dijkstra)</li>
+                  <li>Detects negative weight cycles on V-th iteration</li>
+                  <li>Slower than Dijkstra but more general</li>
+                </ul>
+              </div>
+              <div class="info-section">
+                <div class="info-label">🐛 Corner Cases</div>
+                <ul class="info-list">
+                  <li>Negative cycle — report "no shortest path"</li>
+                  <li>Disconnected graph — unreachable nodes stay ∞</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="algo-card" data-category="graph" data-name="topological sort dag directed acyclic">
+        <div class="algo-header" onclick="toggleAlgo(this)">
+          <span class="algo-num">03</span>
+          <span class="algo-title">Topological Sort</span>
+          <div class="algo-chips">
+            <span class="tag green">O(V+E)</span>
+            <span class="tag blue">DAG only</span>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="algo-body">
+          <div class="two-col">
+            <div>
+              <table class="complexity-table">
+                <tr><th>Method</th><th>Time</th><th>Space</th></tr>
+                <tr><td>Kahn's (BFS)</td><td class="o-n">O(V+E)</td><td class="o-n">O(V)</td></tr>
+                <tr><td>DFS-based</td><td class="o-n">O(V+E)</td><td class="o-n">O(V)</td></tr>
+              </table>
+            </div>
+            <div>
+              <div class="info-section">
+                <div class="info-label">Key Idea</div>
+                <ul class="info-list">
+                  <li>Order vertices so all edges go A → B (A before B)</li>
+                  <li>Only possible in DAGs (no cycles)</li>
+                  <li>Kahn's: repeatedly remove in-degree-0 nodes</li>
+                  <li>DFS: add node to stack after all neighbors processed</li>
+                </ul>
+              </div>
+              <div class="info-section">
+                <div class="info-label">🚀 Applications</div>
+                <ul class="info-list">
+                  <li>Build systems (Make, Gradle)</li>
+                  <li>Package dependency resolution</li>
+                  <li>Course prerequisite scheduling</li>
+                  <li>Spreadsheet formula evaluation order</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       SECTION: DYNAMIC PROGRAMMING
+  ════════════════════════════════════════ -->
+  <div class="section" id="sec-dp">
+    <div class="section-header">
+      <div class="section-icon" style="background:#fef0ec; font-size:22px;">⚙️</div>
+      <div>
+        <div class="section-title">Dynamic Programming</div>
+        <div class="section-count">Memoization · Tabulation · LCS · Knapsack · LIS · Coin Change</div>
+      </div>
+    </div>
+    <div id="dp-grid">
+
+      <div class="algo-card" data-category="dp" data-name="dynamic programming memoization tabulation overlapping">
+        <div class="algo-header" onclick="toggleAlgo(this)">
+          <span class="algo-num">DP</span>
+          <span class="algo-title">Dynamic Programming — Core Concepts</span>
+          <div class="algo-chips">
+            <span class="tag green">Optimal substructure</span>
+            <span class="tag blue">Overlapping subproblems</span>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="algo-body">
+          <div class="two-col">
+            <div>
+              <div class="info-section">
+                <div class="info-label">Two Approaches</div>
+                <ul class="info-list">
+                  <li><b>Top-down (Memoization):</b> Recursion + cache results → avoids recomputation</li>
+                  <li><b>Bottom-up (Tabulation):</b> Build up from base cases → fills a table iteratively</li>
+                  <li>Both give same time complexity, tabulation has lower stack overhead</li>
+                  <li>Space optimization: often reduce 2D table to 1D or a few variables</li>
+                </ul>
+              </div>
+            </div>
+            <div>
+              <div class="info-section">
+                <div class="info-label">Classic DP Problems</div>
+                <ul class="info-list">
+                  <li><b>0/1 Knapsack:</b> O(n·W) time, O(W) space</li>
+                  <li><b>Longest Common Subsequence:</b> O(m·n) time</li>
+                  <li><b>Longest Increasing Subsequence:</b> O(n log n) with patience sort</li>
+                  <li><b>Coin Change:</b> O(amount · coins) time</li>
+                  <li><b>Edit Distance:</b> O(m·n) time</li>
+                  <li><b>Matrix Chain Multiplication:</b> O(n³)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="info-section" style="margin-top:12px">
+            <div class="info-label">🐛 Common DP Pitfalls</div>
+            <ul class="info-list">
+              <li>Not identifying base cases correctly → wrong answers or index errors</li>
+              <li>Incorrect recurrence relation — the heart of every DP problem</li>
+              <li>Off-by-one in table dimensions (dp[n+1] vs dp[n])</li>
+              <li>Assuming overlapping subproblems exist when they don't (greedy may be simpler)</li>
+              <li>Not resetting memo/table between test cases in competitive programming</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- QUICK REFERENCE TABLE -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon" style="background:#f0efe8; font-size:22px;">📊</div>
+      <div>
+        <div class="section-title">Master Complexity Cheat Sheet</div>
+        <div class="section-count">All structures at a glance</div>
+      </div>
+    </div>
+    <div style="overflow-x:auto; background:var(--card); border:1.5px solid var(--border); border-radius:var(--radius);">
+      <table class="complexity-table" style="width:100%; min-width:640px;">
+        <thead>
+          <tr>
+            <th style="min-width:160px">Structure / Algorithm</th>
+            <th>Access</th>
+            <th>Search</th>
+            <th>Insert</th>
+            <th>Delete</th>
+            <th>Space</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="font-weight:600; padding:8px 10px;">Array</td><td class="o-n1">O(1)</td><td class="o-n">O(n)</td><td class="o-n">O(n)</td><td class="o-n">O(n)</td><td class="o-n">O(n)</td></tr>
+          <tr style="background:var(--bg)"><td style="font-weight:600; padding:8px 10px;">Dynamic Array</td><td class="o-n1">O(1)</td><td class="o-n">O(n)</td><td class="o-n1">O(1)*</td><td class="o-n">O(n)</td><td class="o-n">O(n)</td></tr>
+          <tr><td style="font-weight:600; padding:8px 10px;">Singly Linked List</td><td class="o-n">O(n)</td><td class="o-n">O(n)</td><td class="o-n1">O(1)</td><td class="o-n1">O(1)**</td><td class="o-n">O(n)</td></tr>
+          <tr style="background:var(--bg)"><td style="font-weight:600; padding:8px 10px;">Stack</td><td class="o-n">O(n)</td><td class="o-n">O(n)</td><td class="o-n1">O(1)</td><td class="o-n1">O(1)</td><td class="o-n">O(n)</td></tr>
+          <tr><td style="font-weight:600; padding:8px 10px;">Queue</td><td class="o-n">O(n)</td><td class="o-n">O(n)</td><td class="o-n1">O(1)</td><td class="o-n1">O(1)</td><td class="o-n">O(n)</td></tr>
+          <tr style="background:var(--bg)"><td style="font-weight:600; padding:8px 10px;">Hash Table</td><td>N/A</td><td class="o-n1">O(1)</td><td class="o-n1">O(1)</td><td class="o-n1">O(1)</td><td class="o-n">O(n)</td></tr>
+          <tr><td style="font-weight:600; padding:8px 10px;">BST (balanced)</td><td class="o-logn">O(log n)</td><td class="o-logn">O(log n)</td><td class="o-logn">O(log n)</td><td class="o-logn">O(log n)</td><td class="o-n">O(n)</td></tr>
+          <tr style="background:var(--bg)"><td style="font-weight:600; padding:8px 10px;">AVL Tree</td><td class="o-logn">O(log n)</td><td class="o-logn">O(log n)</td><td class="o-logn">O(log n)</td><td class="o-logn">O(log n)</td><td class="o-n">O(n)</td></tr>
+          <tr><td style="font-weight:600; padding:8px 10px;">Min/Max Heap</td><td>N/A</td><td class="o-n">O(n)</td><td class="o-logn">O(log n)</td><td class="o-logn">O(log n)</td><td class="o-n">O(n)</td></tr>
+          <tr style="background:var(--bg)"><td style="font-weight:600; padding:8px 10px;">Trie</td><td>N/A</td><td class="o-n">O(m)</td><td class="o-n">O(m)</td><td class="o-n">O(m)</td><td class="o-n">O(n·m)</td></tr>
+          <tr><td style="font-weight:600; padding:8px 10px; border-top:2px solid var(--border); color:var(--accent)">Quick Sort</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="o-logn" style="border-top:2px solid var(--border);">O(log n)</td></tr>
+          <tr style="background:var(--bg)"><td style="font-weight:600; padding:8px 10px;">Merge Sort</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="o-n">O(n)</td></tr>
+          <tr><td style="font-weight:600; padding:8px 10px;">Heap Sort</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="o-n1">O(1)</td></tr>
+          <tr style="background:var(--bg)"><td style="font-weight:600; padding:8px 10px;">Counting Sort</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="o-n">O(k)</td></tr>
+          <tr><td style="font-weight:600; padding:8px 10px;">Dijkstra's</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="o-n">O(V)</td></tr>
+        </tbody>
+      </table>
+      <div style="padding:10px 12px; font-family:var(--mono); font-size:11px; color:var(--ink3); border-top:1px solid var(--border);">
+        * amortized &nbsp;|&nbsp; ** at known pointer &nbsp;|&nbsp; m = string length &nbsp;|&nbsp; k = max value in counting sort
+      </div>
+    </div>
+  </div>
+
+</div><!-- end main-layout -->
+
+<footer>
+  Built with ❤️ — <span>DSA Atlas</span> · All Complexities, Trade-offs & Applications in One Place
+</footer>
+
+<script>
+  function toggleExpand(btn) {
+    btn.classList.toggle('open');
+    const content = btn.nextElementSibling;
+    content.classList.toggle('open');
+  }
+
+  function toggleAlgo(header) {
+    const body = header.nextElementSibling;
+    const svg = header.querySelector('svg');
+    body.classList.toggle('open');
+    svg.style.transform = body.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+  }
+
+  function filterCards() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    document.querySelectorAll('[data-name]').forEach(card => {
+      const name = card.dataset.name || '';
+      card.style.display = name.includes(q) || q === '' ? '' : 'none';
+    });
+  }
+
+  function filterByCategory(cat, btn) {
+    document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+
+    document.querySelectorAll('[data-category]').forEach(card => {
+      if (cat === 'all' || card.dataset.category === cat) {
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    // Show/hide sections based on visible cards
+    document.querySelectorAll('.section').forEach(sec => {
+      const cards = sec.querySelectorAll('[data-category]');
+      let any = false;
+      cards.forEach(c => { if (c.style.display !== 'none') any = true; });
+      sec.style.display = any ? '' : 'none';
+    });
+  }
+</script>
+</body>
+</html>

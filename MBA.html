@@ -1,0 +1,923 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MBA Cheat Sheet — Light Theme (with Diagrams)</title>
+  <meta name="description" content="MBA cheat sheet: acronyms, terminology, frameworks, processes, and a build-to-scale playbook with diagrams." />
+
+  <style>
+    :root{
+      /* Light theme */
+      --bg0:#f7f9ff;
+      --bg1:#ffffff;
+      --card:#ffffff;
+      --text:#101828;
+      --muted:#5a6b8a;
+      --muted2:#344054;
+      --accent:#2f66ff;
+      --accent2:#12b886;
+      --warn:#b54708;
+      --danger:#c01048;
+      --border: rgba(16,24,40,.14);
+      --border2: rgba(47,102,255,.28);
+      --shadow: 0 10px 30px rgba(16,24,40,.08);
+      --radius: 16px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --bg-accent: rgba(47,102,255,.05);
+      --bg-accent2: rgba(18,184,134,.06);
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(900px 650px at 15% 0%, rgba(47,102,255,.12), transparent 55%),
+        radial-gradient(900px 650px at 85% 10%, rgba(18,184,134,.10), transparent 55%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      color: var(--text);
+    }
+    a{ color: var(--accent); text-decoration:none; }
+    a:hover{ text-decoration:underline; }
+
+    .container{ max-width: 1200px; margin:0 auto; padding: 18px; }
+
+    header{
+      position: sticky; top:0; z-index:10;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,.78);
+      backdrop-filter: blur(10px);
+    }
+    .header-inner{ display:flex; gap:16px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
+    .brand h1{ margin:0; font-size: 20px; letter-spacing:.2px; }
+    .brand .sub{ margin: 3px 0 0; font-size: 12px; color: var(--muted); }
+
+    nav{ display:flex; gap:10px; flex-wrap:wrap; }
+    nav a{
+      color: var(--text);
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: 13px;
+      background: rgba(255,255,255,.6);
+    }
+    nav a:hover{ border-color: var(--accent); color: var(--accent); text-decoration:none; }
+
+    .pill{
+      display:inline-flex; gap:8px; align-items:center;
+      font-size: 12px; color: var(--muted2);
+      padding: 6px 10px; border-radius: 999px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.72);
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+      margin-top: 14px;
+    }
+    .card{
+      grid-column: span 12;
+      background: var(--card);
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .card-header{
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(47,102,255,.06), rgba(255,255,255,1));
+      display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
+    }
+    .card-header h2{ margin:0; font-size: 16px; }
+    .card-body{ padding: 14px 16px 16px; }
+
+    .muted{ color: var(--muted); }
+    .kpi{
+      font-family: var(--mono);
+      font-size: 12px;
+      background: rgba(47,102,255,.05);
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      border-radius: 12px;
+      overflow:auto;
+      color: var(--text);
+    }
+
+    .toolbar{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+    }
+    input[type="search"], select{
+      background: rgba(255,255,255,.9);
+      color: var(--text);
+      border:1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 12px;
+      outline:none;
+      min-width: 240px;
+    }
+    input[type="search"]:focus, select:focus{ border-color: var(--accent); }
+
+    .btn{
+      cursor:pointer;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.92);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 13px;
+    }
+    .btn:hover{ border-color: var(--accent); color: var(--accent); }
+    .btn.primary{ border-color: var(--border2); background: rgba(47,102,255,.08); }
+    .btn.small{ padding: 6px 9px; border-radius: 10px; font-size: 12px; }
+
+    .stats{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+      font-size: 12px; color: var(--muted);
+    }
+
+    .item-grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 12px;
+    }
+    .item{
+      border:1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      background: linear-gradient(180deg, rgba(255,255,255,1), rgba(47,102,255,.03));
+    }
+    .item .top{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
+    .term{ margin:0; font-size: 14px; line-height:1.25; }
+    .tags{ display:flex; gap:6px; flex-wrap:wrap; margin-top: 8px; }
+
+    .tag{
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border:1px solid var(--border);
+      color: var(--muted2);
+      background: rgba(255,255,255,.85);
+    }
+    .tag.good{ border-color: rgba(18,184,134,.35); color: #0b6b4f; background: rgba(18,184,134,.08); }
+    .tag.warn{ border-color: rgba(181,71,8,.35); color: #7a2e00; background: rgba(181,71,8,.07); }
+    .tag.risk{ border-color: rgba(192,16,72,.30); color: #8a0b36; background: rgba(192,16,72,.06); }
+
+    .def{ margin: 8px 0 0; color: var(--text); font-size: 13px; line-height:1.4; }
+    .meta{ margin-top: 8px; color: var(--muted); font-size: 12px; display:flex; gap:10px; flex-wrap:wrap; }
+
+    details{
+      border:1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px 12px;
+      background: rgba(255,255,255,.9);
+    }
+    details summary{
+      cursor:pointer;
+      font-weight:600;
+      color: var(--text);
+      list-style:none;
+    }
+    details summary::-webkit-details-marker{ display:none; }
+
+    .cols{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 14px;
+    }
+    @media (max-width: 980px){
+      .cols{ grid-template-columns: 1fr; }
+      input[type="search"], select{ min-width: 180px; flex:1; }
+    }
+
+    .timeline{ display:grid; gap: 10px; }
+    .stage{
+      border:1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(255,255,255,.95);
+      padding: 12px;
+    }
+    .stage h3{
+      margin:0 0 8px;
+      font-size: 14px;
+      display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+    }
+    .stage .num{
+      font-family: var(--mono);
+      font-size: 12px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border2);
+      background: rgba(47,102,255,.08);
+      color: var(--muted2);
+    }
+    ul{ margin: 8px 0 0 18px; }
+    li{ margin: 6px 0; font-size: 13px; line-height:1.4; }
+
+    .callout{
+      border-left: 3px solid var(--accent2);
+      background: var(--bg-accent2);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 13px;
+    }
+    .callout.warn{
+      border-left-color: #b54708;
+      background: rgba(181,71,8,.06);
+    }
+
+    .footer{
+      margin: 20px 0 40px;
+      color: var(--muted);
+      font-size: 12px;
+      text-align:center;
+    }
+
+    .split{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+    .copy-ok{
+      font-size: 12px; color: #0b6b4f;
+      border: 1px solid rgba(18,184,134,.35);
+      padding: 5px 8px; border-radius: 10px;
+      background: rgba(18,184,134,.08);
+      display:none;
+    }
+    .section-anchor{ scroll-margin-top: 88px; }
+
+    /* Diagrams */
+    .diagram-wrap{
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--bg-accent);
+      padding: 12px;
+      overflow: auto;
+    }
+    .diagram-title{
+      display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
+      margin: 0 0 10px;
+    }
+    .diagram-title h3{ margin:0; font-size: 14px; }
+    .diagram-title .muted{ font-size: 12px; }
+    svg{ max-width: 100%; height: auto; }
+    .svg-box{ fill:#fff; stroke: rgba(16,24,40,.22); stroke-width:1.2; }
+    .svg-box.soft{ fill: rgba(47,102,255,.06); }
+    .svg-box.green{ fill: rgba(18,184,134,.08); }
+    .svg-box.amber{ fill: rgba(181,71,8,.08); }
+    .svg-text{ fill: #101828; font-size: 12px; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+    .svg-text.small{ font-size: 11px; fill: #344054; }
+    .svg-link{ font-size: 11px; fill: #2f66ff; text-decoration: underline; cursor: pointer; }
+    .svg-arrow{ stroke: rgba(16,24,40,.40); stroke-width:1.6; fill:none; marker-end: url(#arrowHead); }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="container header-inner">
+    <div class="brand">
+      <h1>MBA Cheat Sheet</h1>
+      <div class="sub">Light theme • Acronyms • Frameworks • Processes • Playbooks • Diagrams</div>
+    </div>
+    <nav aria-label="Primary">
+      <a href="#search">Search</a>
+      <a href="#acronyms">Acronyms</a>
+      <a href="#frameworks">Frameworks</a>
+      <a href="#processes">Processes</a>
+      <a href="#banking">Banking</a>
+      <a href="#scale">$0 → $200M</a>
+    </nav>
+    <span class="pill">Single-file HTML (offline)</span>
+  </div>
+</header>
+
+<main class="container">
+  <div class="grid">
+
+    <!-- SEARCH -->
+    <section id="search" class="card section-anchor">
+      <div class="card-header">
+        <h2>Search everything</h2>
+        <div class="toolbar">
+          <input id="q" type="search" placeholder="Search (e.g., CAC, NPV, churn, bank accounts, KYC)..." />
+          <select id="typeFilter" aria-label="Type filter">
+            <option value="ALL">All types</option>
+            <option value="ACRONYM">Acronyms</option>
+            <option value="FRAMEWORK">Frameworks</option>
+            <option value="PROCESS">Processes</option>
+            <option value="CHECKLIST">Checklists</option>
+          </select>
+          <select id="tagFilter" aria-label="Tag filter">
+            <option value="ALL">All tags</option>
+          </select>
+          <button class="btn primary" id="clearBtn">Clear</button>
+        </div>
+        <div class="stats" id="stats"></div>
+      </div>
+      <div class="card-body">
+        <div class="split">
+          <button class="btn small" id="copySearchUrlBtn" title="Copies a URL with current search/filters (best when hosted)">Copy share link</button>
+          <span class="copy-ok" id="copyOk">Copied</span>
+        </div>
+        <div style="height:10px"></div>
+        <div id="results" class="item-grid"></div>
+
+        <div style="height:14px"></div>
+        <div class="callout warn">
+          Publishing reminder: banking, tax, and compliance topics vary by jurisdiction and company type—validate with qualified professionals.
+        </div>
+      </div>
+    </section>
+
+    <!-- ACRONYMS -->
+    <section id="acronyms" class="card section-anchor">
+      <div class="card-header">
+        <h2>Acronyms & Terminology</h2>
+        <div class="stats muted">Expanded starter set; edit the <span style="font-family:var(--mono)">DATA</span> section to add more.</div>
+      </div>
+      <div class="card-body">
+        <div id="acronymGrid" class="item-grid"></div>
+      </div>
+    </section>
+
+    <!-- FRAMEWORKS -->
+    <section id="frameworks" class="card section-anchor">
+      <div class="card-header">
+        <h2>Frameworks & mental models</h2>
+        <div class="stats muted">Use these to structure analysis and decisions.</div>
+      </div>
+      <div class="card-body">
+        <div id="frameworkGrid" class="item-grid"></div>
+
+        <div style="height:14px"></div>
+        <div class="diagram-wrap">
+          <div class="diagram-title">
+            <h3>Diagram: AARRR funnel (example)</h3>
+            <div class="muted">Use for growth diagnostics: where are you leaking?</div>
+          </div>
+
+          <!-- AARRR funnel diagram (SVG) -->
+          <svg viewBox="0 0 980 170" role="img" aria-label="AARRR funnel diagram">
+            <defs>
+              <marker id="arrowHead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="rgba(16,24,40,.40)"></polygon>
+              </marker>
+            </defs>
+
+            <!-- Boxes -->
+            <rect class="svg-box soft" x="20"  y="55" width="150" height="70" rx="12"></rect>
+            <rect class="svg-box"      x="205" y="55" width="150" height="70" rx="12"></rect>
+            <rect class="svg-box"      x="390" y="55" width="150" height="70" rx="12"></rect>
+            <rect class="svg-box"      x="575" y="55" width="150" height="70" rx="12"></rect>
+            <rect class="svg-box green" x="760" y="55" width="200" height="70" rx="12"></rect>
+
+            <!-- Text -->
+            <text class="svg-text" x="95"  y="85" text-anchor="middle">Acquisition</text>
+            <text class="svg-text small" x="95" y="106" text-anchor="middle">Traffic → signups</text>
+
+            <text class="svg-text" x="280" y="85" text-anchor="middle">Activation</text>
+            <text class="svg-text small" x="280" y="106" text-anchor="middle">First value</text>
+
+            <text class="svg-text" x="465" y="85" text-anchor="middle">Retention</text>
+            <text class="svg-text small" x="465" y="106" text-anchor="middle">Comes back</text>
+
+            <text class="svg-text" x="650" y="85" text-anchor="middle">Referral</text>
+            <text class="svg-text small" x="650" y="106" text-anchor="middle">Invites others</text>
+
+            <text class="svg-text" x="860" y="85" text-anchor="middle">Revenue</text>
+            <text class="svg-text small" x="860" y="106" text-anchor="middle">Paid + expansion</text>
+
+            <!-- Arrows -->
+            <path class="svg-arrow" d="M170 90 L205 90"></path>
+            <path class="svg-arrow" d="M355 90 L390 90"></path>
+            <path class="svg-arrow" d="M540 90 L575 90"></path>
+            <path class="svg-arrow" d="M725 90 L760 90"></path>
+
+            <!-- Notes -->
+            <text class="svg-text small" x="20" y="30">Metric examples: CTR, CVR, activation rate, D7/D30 retention, K-factor, ARPA/NRR</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROCESSES -->
+    <section id="processes" class="card section-anchor">
+      <div class="card-header">
+        <h2>Business processes & operating cadence</h2>
+        <div class="stats muted">Playbooks that make scaling repeatable.</div>
+      </div>
+      <div class="card-body">
+        <div id="processGrid" class="item-grid"></div>
+      </div>
+    </section>
+
+    <!-- BANKING PROCESS (with diagrams) -->
+    <section id="banking" class="card section-anchor">
+      <div class="card-header">
+        <h2>Process: choosing a bank & setting up bank accounts (business)</h2>
+        <div class="stats muted">Practical checklist + diagrams. Adapt by country, entity type, and risk profile.</div>
+      </div>
+
+      <div class="card-body">
+        <div class="diagram-wrap">
+          <div class="diagram-title">
+            <h3>Diagram: bank selection workflow</h3>
+            <div class="muted">From requirements → shortlist → onboarding → controls</div>
+          </div>
+
+          <!-- Banking selection flowchart (SVG) -->
+          <svg viewBox="0 0 1100 260" role="img" aria-label="Bank selection workflow">
+            <defs>
+              <marker id="arrowHead2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="rgba(16,24,40,.40)"></polygon>
+              </marker>
+            </defs>
+
+            <style>
+              .a{ stroke: rgba(16,24,40,.40); stroke-width:1.6; fill:none; marker-end:url(#arrowHead2); }
+            </style>
+
+            <!-- Row 1 -->
+            <rect class="svg-box soft" x="20" y="40" width="200" height="80" rx="14"></rect>
+            <text class="svg-text" x="120" y="75" text-anchor="middle">Clarify requirements</text>
+            <text class="svg-text small" x="120" y="97" text-anchor="middle">rails, currencies, controls</text>
+
+            <rect class="svg-box" x="260" y="40" width="200" height="80" rx="14"></rect>
+            <text class="svg-text" x="360" y="75" text-anchor="middle">Shortlist banks</text>
+            <text class="svg-text small" x="360" y="97" text-anchor="middle">fit, coverage, stability</text>
+
+            <rect class="svg-box" x="500" y="40" width="220" height="80" rx="14"></rect>
+            <text class="svg-text" x="610" y="75" text-anchor="middle">Scorecard + diligence</text>
+            <text class="svg-text small" x="610" y="97" text-anchor="middle">fees, KYC, controls, APIs</text>
+
+            <rect class="svg-box green" x="760" y="40" width="320" height="80" rx="14"></rect>
+            <text class="svg-text" x="920" y="75" text-anchor="middle">Select + negotiate</text>
+            <text class="svg-text small" x="920" y="97" text-anchor="middle">pricing tiers, SLA, FX spreads</text>
+
+            <!-- Arrows row 1 -->
+            <path class="a" d="M220 80 L260 80"></path>
+            <path class="a" d="M460 80 L500 80"></path>
+            <path class="a" d="M720 80 L760 80"></path>
+
+            <!-- Row 2 -->
+            <rect class="svg-box" x="20" y="160" width="260" height="80" rx="14"></rect>
+            <text class="svg-text" x="150" y="195" text-anchor="middle">Open accounts</text>
+            <text class="svg-text small" x="150" y="217" text-anchor="middle">signers, roles, limits</text>
+
+            <rect class="svg-box amber" x="320" y="160" width="260" height="80" rx="14"></rect>
+            <text class="svg-text" x="450" y="195" text-anchor="middle">Implement controls</text>
+            <text class="svg-text small" x="450" y="217" text-anchor="middle">dual approval, alerts, locks</text>
+
+            <rect class="svg-box" x="620" y="160" width="220" height="80" rx="14"></rect>
+            <text class="svg-text" x="730" y="195" text-anchor="middle">Integrate systems</text>
+            <text class="svg-text small" x="730" y="217" text-anchor="middle">ERP, payroll, expense, PSP</text>
+
+            <rect class="svg-box green" x="880" y="160" width="200" height="80" rx="14"></rect>
+            <text class="svg-text" x="980" y="195" text-anchor="middle">Operate + monitor</text>
+            <text class="svg-text small" x="980" y="217" text-anchor="middle">recon, fraud, fee review</text>
+
+            <!-- Arrows row 2 -->
+            <path class="a" d="M280 200 L320 200"></path>
+            <path class="a" d="M580 200 L620 200"></path>
+            <path class="a" d="M840 200 L880 200"></path>
+
+            <!-- Connector arrow from row1 to row2 -->
+            <path class="a" d="M920 120 C 920 140, 150 140, 150 160"></path>
+
+            <text class="svg-text small" x="20" y="24">Design goal: fast execution with strong controls and clean reconciliation from day 1.</text>
+          </svg>
+        </div>
+
+        <div style="height:14px"></div>
+
+        <div class="diagram-wrap">
+          <div class="diagram-title">
+            <h3>Diagram: recommended account architecture</h3>
+            <div class="muted">Segregate duties & risk; keep reconciliation simple</div>
+          </div>
+
+          <!-- Account architecture diagram (SVG) -->
+          <svg viewBox="0 0 1100 320" role="img" aria-label="Recommended bank account architecture">
+            <defs>
+              <marker id="arrowHead3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="rgba(16,24,40,.40)"></polygon>
+              </marker>
+            </defs>
+            <style>
+              .a{ stroke: rgba(16,24,40,.40); stroke-width:1.6; fill:none; marker-end:url(#arrowHead3); }
+            </style>
+
+            <!-- Inflows -->
+            <rect class="svg-box soft" x="20" y="55" width="220" height="80" rx="14"></rect>
+            <text class="svg-text" x="130" y="87" text-anchor="middle">Customer payments</text>
+            <text class="svg-text small" x="130" y="109" text-anchor="middle">cards / ACH / wire</text>
+
+            <rect class="svg-box soft" x="20" y="160" width="220" height="80" rx="14"></rect>
+            <text class="svg-text" x="130" y="192" text-anchor="middle">Funding / capital</text>
+            <text class="svg-text small" x="130" y="214" text-anchor="middle">equity / loans</text>
+
+            <!-- Settlement -->
+            <rect class="svg-box" x="280" y="55" width="260" height="80" rx="14"></rect>
+            <text class="svg-text" x="410" y="87" text-anchor="middle">Merchant settlement acct</text>
+            <text class="svg-text small" x="410" y="109" text-anchor="middle">chargebacks isolated</text>
+
+            <!-- Operating -->
+            <rect class="svg-box green" x="580" y="95" width="280" height="120" rx="14"></rect>
+            <text class="svg-text" x="720" y="140" text-anchor="middle">Operating account</text>
+            <text class="svg-text small" x="720" y="162" text-anchor="middle">AP/AR, vendors, working capital</text>
+
+            <!-- Sub accounts -->
+            <rect class="svg-box amber" x="900" y="55" width="180" height="80" rx="14"></rect>
+            <text class="svg-text" x="990" y="87" text-anchor="middle">Tax / VAT acct</text>
+            <text class="svg-text small" x="990" y="109" text-anchor="middle">segregated liability</text>
+
+            <rect class="svg-box" x="900" y="155" width="180" height="80" rx="14"></rect>
+            <text class="svg-text" x="990" y="187" text-anchor="middle">Payroll acct</text>
+            <text class="svg-text small" x="990" y="209" text-anchor="middle">reduced fraud risk</text>
+
+            <rect class="svg-box" x="900" y="245" width="180" height="60" rx="14"></rect>
+            <text class="svg-text" x="990" y="280" text-anchor="middle">Treasury / savings</text>
+
+            <!-- Arrows -->
+            <path class="a" d="M240 95 L280 95"></path>
+            <path class="a" d="M240 200 L580 200"></path>
+            <path class="a" d="M540 95 C 560 95, 560 155, 580 155"></path>
+            <path class="a" d="M860 135 L900 95"></path>
+            <path class="a" d="M860 155 L900 195"></path>
+            <path class="a" d="M720 215 L900 270"></path>
+
+            <text class="svg-text small" x="580" y="40">
+              Controls to consider: dual approval • role-based access • payee allowlists • alerts • admin-change locks
+            </text>
+          </svg>
+        </div>
+
+        <div style="height:14px"></div>
+
+        <div class="cols">
+          <details open>
+            <summary>1) Clarify requirements (before you talk to banks)</summary>
+            <ul>
+              <li><b>Entity & footprint</b>: country, legal entity type, expected geographies/currencies.</li>
+              <li><b>Account types</b>: operating, payroll, tax, merchant settlement, savings/treasury.</li>
+              <li><b>Payment rails</b>: ACH/SEPA/wires, international transfers, local clearing.</li>
+              <li><b>Controls</b>: dual approval, RBAC, audit logs, limits, fraud monitoring.</li>
+              <li><b>Integrations</b>: ERP/accounting, payroll provider, expense tool, payment processor.</li>
+              <li><b>Risk profile</b>: chargeback exposure, sanctions screening, KYC/AML complexity.</li>
+            </ul>
+          </details>
+
+          <details open>
+            <summary>2) Build a shortlist & evaluation scorecard</summary>
+            <ul>
+              <li><b>Capabilities</b>: multi-currency, bulk payments, APIs, virtual accounts (if needed).</li>
+              <li><b>Fees</b>: monthly fees, wires, FX spreads, minimum balances, overdraft terms.</li>
+              <li><b>Support model</b>: relationship manager vs self-serve; support hours.</li>
+              <li><b>Security</b>: MFA, device controls, admin-change controls, alerts, positive pay (where relevant).</li>
+              <li><b>Onboarding speed</b>: typical KYC timeline and documentation burden.</li>
+            </ul>
+            <div style="height:10px"></div>
+            <div class="kpi">
+Example weighting (edit): Controls/Security 25% • Capabilities 25% • Fees 15% • Support/SLA 15% • Integrations 10% • Onboarding 10%
+            </div>
+          </details>
+        </div>
+
+        <div style="height:14px"></div>
+
+        <details open>
+          <summary>3) Implementation steps (end-to-end)</summary>
+          <ul>
+            <li><b>Prepare documents</b>: formation docs, tax IDs, proof of address, UBO list, IDs, resolutions (as needed).</li>
+            <li><b>Open accounts</b>: authorized signers, user roles, approvals, daily limits.</li>
+            <li><b>Set controls</b>: dual approvals, payee allowlists, alerts, admin locks, access reviews.</li>
+            <li><b>Connect systems</b>: accounting/ERP feeds, payroll, expense, billing, payment processor.</li>
+            <li><b>Reconciliation SOP</b>: daily cash view; weekly reconciliation; month-end close checklist.</li>
+            <li><b>Test & rollout</b>: small payments, reversals; migrate vendors/customers; update invoice instructions.</li>
+            <li><b>Monitor</b>: fee review, fraud incidents, exceptions, periodic bank relationship check.</li>
+          </ul>
+        </details>
+
+        <div style="height:14px"></div>
+        <div class="callout">
+          Practical control baseline: require <b>two-person approval</b> for wires/ACH and for <b>admin changes</b> (adding users, raising limits, changing payment instructions).
+        </div>
+      </div>
+    </section>
+
+    <!-- SCALE PLAYBOOK (with diagram) -->
+    <section id="scale" class="card section-anchor">
+      <div class="card-header">
+        <h2>Build from scratch → scale toward $200M (playbook)</h2>
+        <div class="stats muted">Template; adapt by business model and market.</div>
+      </div>
+      <div class="card-body">
+
+        <div class="diagram-wrap">
+          <div class="diagram-title">
+            <h3>Diagram: scaling system (strategy → execution → feedback)</h3>
+            <div class="muted">A simple operating model loop</div>
+          </div>
+
+          <!-- Operating model loop (SVG) -->
+          <svg viewBox="0 0 1100 260" role="img" aria-label="Operating model loop">
+            <defs>
+              <marker id="arrowHead4" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="rgba(16,24,40,.40)"></polygon>
+              </marker>
+            </defs>
+            <style>
+              .a{ stroke: rgba(16,24,40,.40); stroke-width:1.6; fill:none; marker-end:url(#arrowHead4); }
+            </style>
+
+            <rect class="svg-box soft" x="30" y="90" width="230" height="90" rx="16"></rect>
+            <text class="svg-text" x="145" y="128" text-anchor="middle">Strategy</text>
+            <text class="svg-text small" x="145" y="150" text-anchor="middle">where to play / how to win</text>
+
+            <rect class="svg-box" x="310" y="60" width="230" height="90" rx="16"></rect>
+            <text class="svg-text" x="425" y="98" text-anchor="middle">Plan</text>
+            <text class="svg-text small" x="425" y="120" text-anchor="middle">OKRs • budget • roadmap</text>
+
+            <rect class="svg-box green" x="590" y="60" width="230" height="90" rx="16"></rect>
+            <text class="svg-text" x="705" y="98" text-anchor="middle">Execute</text>
+            <text class="svg-text small" x="705" y="120" text-anchor="middle">GTM • product • ops</text>
+
+            <rect class="svg-box amber" x="870" y="90" width="200" height="90" rx="16"></rect>
+            <text class="svg-text" x="970" y="128" text-anchor="middle">Measure</text>
+            <text class="svg-text small" x="970" y="150" text-anchor="middle">KPIs • cohorts • finance</text>
+
+            <!-- loop arrows -->
+            <path class="a" d="M260 135 L310 105"></path>
+            <path class="a" d="M540 105 L590 105"></path>
+            <path class="a" d="M820 105 L870 135"></path>
+            <path class="a" d="M970 180 C 970 230, 145 230, 145 180"></path>
+
+            <text class="svg-text small" x="30" y="38">Cadence: weekly reviews → monthly forecasts → quarterly planning (QBR/OKR refresh).</text>
+          </svg>
+        </div>
+
+        <div style="height:14px"></div>
+
+        <div class="timeline" id="scaleTimeline"></div>
+
+        <div style="height:14px"></div>
+        <details>
+          <summary>$200M math sanity check (illustrative)</summary>
+          <ul>
+            <li><b>B2B SaaS</b>: $200M ARR might be ~2,000 customers at $100k ARR or ~20,000 at $10k ARR.</li>
+            <li><b>Core levers</b>: price/packaging, win rate, sales cycle, NRR, churn, margin, channel mix.</li>
+            <li><b>Scaling risk</b>: growth without controls (security, finance, ops) creates expensive rework.</li>
+          </ul>
+        </details>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-body">
+        <div class="footer">
+          Want additional diagrams (e.g., Porter’s 5 Forces layout, unit economics tree, or a full cash conversion cycle)?
+          Tell me your target business model (B2B SaaS vs consumer vs marketplace).
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<script>
+/* ===========================
+   DATA (edit/extend here)
+=========================== */
+const DATA = [
+  // Acronyms & terms
+  {type:"ACRONYM", term:"CAC", tags:["Finance","GTM","Sales","Marketing"], def:"Customer Acquisition Cost: total sales+marketing cost divided by new customers acquired (define included costs + time window).", extra:"Track by segment/channel; pair with payback period."},
+  {type:"ACRONYM", term:"LTV", tags:["Finance","GTM"], def:"Lifetime Value: expected gross profit from a customer over the relationship duration.", extra:"Simple SaaS: LTV ≈ ARPA × GM% ÷ churn% (use cohorts when possible)."},
+  {type:"ACRONYM", term:"ARR", tags:["Finance","SaaS"], def:"Annual Recurring Revenue: recurring subscription revenue normalized to a year."},
+  {type:"ACRONYM", term:"MRR", tags:["Finance","SaaS"], def:"Monthly Recurring Revenue."},
+  {type:"ACRONYM", term:"ARPA / ARPU", tags:["Finance","SaaS"], def:"Average Revenue per Account/User over a period."},
+  {type:"ACRONYM", term:"COGS", tags:["Finance","Ops"], def:"Cost of Goods Sold: direct costs to deliver product/service."},
+  {type:"ACRONYM", term:"Gross Margin (GM)", tags:["Finance"], def:"(Revenue − COGS) ÷ Revenue."},
+  {type:"ACRONYM", term:"Contribution Margin (CM)", tags:["Finance","GTM"], def:"Revenue minus variable costs required to acquire and fulfill demand (definition varies)."},
+  {type:"ACRONYM", term:"NPV", tags:["Finance"], def:"Net Present Value: discounted value of future cash flows minus initial investment."},
+  {type:"ACRONYM", term:"IRR", tags:["Finance"], def:"Internal Rate of Return: discount rate where NPV = 0."},
+  {type:"ACRONYM", term:"Churn", tags:["Finance","Customer Success","SaaS"], def:"Loss of customers (logo churn) or recurring revenue (revenue churn) over a period."},
+  {type:"ACRONYM", term:"GRR", tags:["Finance","SaaS","Customer Success"], def:"Gross Revenue Retention: revenue retained excluding expansion."},
+  {type:"ACRONYM", term:"NRR", tags:["Finance","SaaS","Customer Success"], def:"Net Revenue Retention: retained revenue including expansion minus contraction and churn."},
+  {type:"ACRONYM", term:"ICP", tags:["Strategy","GTM"], def:"Ideal Customer Profile: customers with the highest fit, willingness-to-pay, and retention."},
+  {type:"ACRONYM", term:"TAM / SAM / SOM", tags:["Strategy","GTM"], def:"Market sizing: Total Addressable, Serviceable Available, Serviceable Obtainable market."},
+  {type:"ACRONYM", term:"KYC / AML", tags:["Risk","Finance"], def:"Know Your Customer / Anti-Money Laundering: onboarding and monitoring requirements financial institutions use to prevent illicit activity.", extra:"Plan onboarding timelines accordingly; document beneficial owners (UBOs)."},
+  {type:"ACRONYM", term:"OKR", tags:["Ops","Leadership"], def:"Objectives and Key Results: outcome-oriented goals with measurable results."},
+  {type:"ACRONYM", term:"KPI", tags:["Ops"], def:"Key Performance Indicator: metric used to track performance vs a target."},
+  {type:"ACRONYM", term:"RACI", tags:["Ops","Leadership"], def:"Responsible, Accountable, Consulted, Informed: clarifies ownership and decision roles."},
+  {type:"ACRONYM", term:"SOP", tags:["Ops"], def:"Standard Operating Procedure: documented best-known method for repeatable work."},
+  {type:"ACRONYM", term:"MVP", tags:["Product","Strategy"], def:"Minimum Viable Product: smallest product to validate a hypothesis with real users."},
+  {type:"ACRONYM", term:"JTBD", tags:["Product","Marketing"], def:"Jobs To Be Done: customers hire products to accomplish outcomes; focus on the job, not the persona."},
+
+  // Frameworks
+  {type:"FRAMEWORK", term:"SWOT", tags:["Strategy"], def:"Strengths, Weaknesses, Opportunities, Threats: structured situational analysis.", extra:"Prioritize—don’t just list."},
+  {type:"FRAMEWORK", term:"Porter’s Five Forces", tags:["Strategy"], def:"Industry forces: rivalry, new entrants, substitutes, buyer power, supplier power."},
+  {type:"FRAMEWORK", term:"STP", tags:["Marketing"], def:"Segmentation, Targeting, Positioning: choose who you serve and how you win."},
+  {type:"FRAMEWORK", term:"7Ps", tags:["Marketing"], def:"Product, Price, Place, Promotion, People, Process, Physical evidence."},
+  {type:"FRAMEWORK", term:"Ansoff Matrix", tags:["Strategy"], def:"Growth choices: penetration, market development, product development, diversification."},
+  {type:"FRAMEWORK", term:"Flywheel", tags:["Strategy","GTM"], def:"Compounding loop where each activity makes the next cheaper/faster (e.g., product → referrals → lower CAC)."},
+
+  // Processes
+  {type:"PROCESS", term:"Market research → ICP definition", tags:["Strategy","Marketing","Sales"], def:"Combine customer interviews + data to define ICP, segmentation, and priority use cases.", extra:"Outputs: ICP doc, segmentation, willingness-to-pay ranges."},
+  {type:"PROCESS", term:"Positioning & messaging", tags:["Marketing","Strategy"], def:"Create category narrative, differentiation, proof points, and a message map.", extra:"Outputs: messaging pillars + competitive battlecards."},
+  {type:"PROCESS", term:"Pricing & packaging", tags:["Finance","GTM"], def:"Define price metric, tiers, discount rules, and packaging aligned to value.", extra:"Add approval matrix + periodic price reviews."},
+  {type:"PROCESS", term:"Sales stage definitions", tags:["Sales"], def:"Standardize funnel stages with entry/exit criteria to improve coaching + forecasting."},
+  {type:"PROCESS", term:"Onboarding → time-to-value", tags:["Customer Success","Ops"], def:"Reduce friction from purchase to first value moment; measure activation + support load."},
+  {type:"PROCESS", term:"Forecasting cadence", tags:["Finance","Ops"], def:"Weekly pipeline + monthly forecast + quarterly planning; manage via variance to plan."},
+  {type:"PROCESS", term:"Bank selection & account setup", tags:["Finance","Ops","Risk"], def:"Choose banking partners and configure account architecture + controls.", extra:"Use scorecard: capabilities, fees, controls, onboarding speed, coverage, integrations."},
+
+  // Checklists
+  {type:"CHECKLIST", term:"Customer discovery interview", tags:["Product","Marketing"], def:"Validate pain, urgency, current workflow, alternatives, and willingness-to-pay.", extra:"Record patterns; don’t sell during discovery."},
+  {type:"CHECKLIST", term:"GTM launch checklist", tags:["Marketing","Sales","Product"], def:"Positioning, enablement, assets, tracking, support readiness, and post-launch review."},
+];
+
+const SCALE_STAGES = [
+  { n:"0", title:"Foundations: real problem + narrow beachhead", tags:["Strategy","Product"],
+    bullets:[
+      "Define ICP + exclusion criteria; quantify top pains and urgency.",
+      "Validate willingness-to-pay via interviews, pilots, and pre-sales signals.",
+      "Write a one-page narrative: problem → solution → why now → why you.",
+      "Create a baseline model: TAM/SAM/SOM + first-year execution assumptions."
+    ],
+    outputs:["ICP doc","Problem narrative","Assumptions/risk list","Baseline financial model"]
+  },
+  { n:"1", title:"MVP + proof of value (retention and time-to-value)", tags:["Product","Ops"],
+    bullets:[
+      "Ship MVP for one use case; instrument activation and retention cohorts.",
+      "Build onboarding SOP; reduce time-to-value and support burden.",
+      "Define pricing hypothesis; test packaging and sales motion.",
+      "Measure unit economics early (GM%, CAC signals, churn reasons)."
+    ],
+    outputs:["MVP","Instrumentation plan","Onboarding SOP","Metrics dashboard"]
+  },
+  { n:"2", title:"Repeatable GTM (a machine, not heroics)", tags:["Sales","Marketing","Finance"],
+    bullets:[
+      "Commit to a primary GTM motion; define funnel stages and SLAs.",
+      "Build enablement: talk track, objection handling, proof points, demos.",
+      "Track conversion + velocity; iterate on channels and segment focus.",
+      "Establish guardrails: CAC, payback, pricing floors, discount controls."
+    ],
+    outputs:["GTM plan","Enablement kit","Funnel metrics","Unit economics model"]
+  },
+  { n:"3", title:"Scale operations (controls, cadence, reliability)", tags:["Leadership","Ops","Risk"],
+    bullets:[
+      "Hire key leaders; clarify decision rights (RACI).",
+      "Implement forecasting and operating cadence; manage by variances.",
+      "Harden security/privacy/controls and support operations to reduce risk.",
+      "Document SOPs and automate repetitive workflows."
+    ],
+    outputs:["Org design","Operating cadence","SOP library","Risk/control baseline"]
+  },
+  { n:"4", title:"Toward $200M: multi-engine growth + margin expansion", tags:["Strategy","Finance","GTM"],
+    bullets:[
+      "Expand: new segment/geo/channel/product line with sequencing discipline.",
+      "Drive NRR: reduce churn + expand accounts via CS programs and product value.",
+      "Optimize pricing/packaging and gross margin; reduce sales cycle friction.",
+      "Invest in durable advantage: ecosystem, brand, switching costs, excellence."
+    ],
+    outputs:["Expansion roadmap","Retention program","Pricing v2+","Margin plan"]
+  }
+];
+
+/* ===========================
+   Helpers / render
+=========================== */
+const $ = (id) => document.getElementById(id);
+function uniq(arr){ return [...new Set(arr)].sort((a,b)=>a.localeCompare(b)); }
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+function tagClass(t){
+  if(t === "Finance") return "tag good";
+  if(t === "Risk" || t === "Legal") return "tag warn";
+  return "tag";
+}
+function itemCard(x){
+  const tags = (x.tags||[]).map(t => `<span class="${tagClass(t)}">${escapeHtml(t)}</span>`).join("");
+  const extra = x.extra ? `<div class="meta"><span class="muted">${escapeHtml(x.extra)}</span></div>` : "";
+  return `
+    <div class="item">
+      <div class="top">
+        <h3 class="term">${escapeHtml(x.term)}</h3>
+        <span class="pill" style="font-size:11px; padding:4px 8px;">${escapeHtml(x.type)}</span>
+      </div>
+      <div class="tags">${tags}</div>
+      <p class="def">${escapeHtml(x.def)}</p>
+      ${extra}
+    </div>
+  `;
+}
+function renderSection(type, targetId, limit=30){
+  const items = DATA.filter(d => d.type === type).slice(0, limit);
+  $(targetId).innerHTML = items.map(itemCard).join("");
+}
+function allTags(){ return uniq(DATA.flatMap(d => d.tags || [])); }
+function hydrateTagFilter(){
+  const tf = $("tagFilter");
+  for(const t of allTags()){
+    const opt = document.createElement("option");
+    opt.value = t; opt.textContent = t;
+    tf.appendChild(opt);
+  }
+}
+function parseParams(){
+  const p = new URLSearchParams(location.search);
+  return { q: p.get("q") || "", type: p.get("type") || "ALL", tag: p.get("tag") || "ALL" };
+}
+function setParams({q,type,tag}){
+  const p = new URLSearchParams();
+  if(q) p.set("q", q);
+  if(type && type !== "ALL") p.set("type", type);
+  if(tag && tag !== "ALL") p.set("tag", tag);
+  history.replaceState(null, "", location.pathname + (p.toString()?`?${p.toString()}`:"") + location.hash);
+}
+function filterData(q, type, tag){
+  const qq = (q || "").trim().toLowerCase();
+  return DATA.filter(d => {
+    if(type !== "ALL" && d.type !== type) return false;
+    if(tag !== "ALL" && !(d.tags||[]).includes(tag)) return false;
+    if(!qq) return true;
+    const hay = [d.term, d.def, d.extra || "", (d.tags||[]).join(" ")].join(" ").toLowerCase();
+    return hay.includes(qq);
+  });
+}
+function renderResults(){
+  const q = $("q").value;
+  const type = $("typeFilter").value;
+  const tag = $("tagFilter").value;
+
+  const items = filterData(q, type, tag);
+  $("results").innerHTML = items.map(itemCard).join("") || `<div class="muted">No matches. Try different keywords/tags.</div>`;
+
+  const counts = {
+    total: items.length,
+    acr: items.filter(x=>x.type==="ACRONYM").length,
+    fw: items.filter(x=>x.type==="FRAMEWORK").length,
+    pr: items.filter(x=>x.type==="PROCESS").length,
+    cl: items.filter(x=>x.type==="CHECKLIST").length,
+  };
+  $("stats").textContent = `Results: ${counts.total} (Acronyms ${counts.acr} • Frameworks ${counts.fw} • Processes ${counts.pr} • Checklists ${counts.cl})`;
+
+  setParams({q, type, tag});
+}
+function renderScale(){
+  $("scaleTimeline").innerHTML = SCALE_STAGES.map(s => `
+    <div class="stage">
+      <h3><span class="num">Stage ${escapeHtml(s.n)}</span> ${escapeHtml(s.title)}</h3>
+      <div class="tags">${(s.tags||[]).map(t => `<span class="${tagClass(t)}">${escapeHtml(t)}</span>`).join("")}</div>
+      <ul>${(s.bullets||[]).map(b => `<li>${escapeHtml(b)}</li>`).join("")}</ul>
+      <div style="height:8px"></div>
+      <details>
+        <summary>Outputs / artifacts</summary>
+        <ul>${(s.outputs||[]).map(o => `<li>${escapeHtml(o)}</li>`).join("")}</ul>
+      </details>
+    </div>
+  `).join("");
+}
+function showCopied(){
+  const x = $("copyOk");
+  x.style.display = "inline-flex";
+  setTimeout(()=> x.style.display = "none", 900);
+}
+
+/* Init */
+hydrateTagFilter();
+renderSection("ACRONYM", "acronymGrid", 30);
+renderSection("FRAMEWORK", "frameworkGrid", 24);
+renderSection("PROCESS", "processGrid", 24);
+renderScale();
+
+const params = parseParams();
+$("q").value = params.q;
+$("typeFilter").value = params.type;
+$("tagFilter").value = params.tag;
+
+$("q").addEventListener("input", renderResults);
+$("typeFilter").addEventListener("change", renderResults);
+$("tagFilter").addEventListener("change", renderResults);
+
+$("clearBtn").addEventListener("click", () => {
+  $("q").value = "";
+  $("typeFilter").value = "ALL";
+  $("tagFilter").value = "ALL";
+  renderResults();
+});
+
+$("copySearchUrlBtn").addEventListener("click", async () => {
+  try{
+    await navigator.clipboard.writeText(location.href);
+    showCopied();
+  }catch(e){
+    prompt("Copy this link:", location.href);
+  }
+});
+
+renderResults();
+</script>
+</body>
+</html>
