@@ -1,0 +1,412 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Serif:wght@400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body,div,p,span,td,th,li{font-family:'IBM Plex Sans',sans-serif}
+code,pre,.mono{font-family:'IBM Plex Mono',monospace}
+:root{
+  --ibm-blue:#0f62fe;--ibm-blue-hover:#0353e9;--ibm-blue-light:#edf5ff;
+  --ibm-gray-10:#f4f4f4;--ibm-gray-20:#e0e0e0;--ibm-gray-30:#c6c6c6;
+  --ibm-gray-50:#8d8d8d;--ibm-gray-70:#525252;--ibm-gray-90:#262626;--ibm-gray-100:#161616;
+  --ibm-green:#24a148;--ibm-green-light:#defbe6;
+  --ibm-purple:#8a3ffc;--ibm-purple-light:#f6f2ff;
+  --ibm-teal:#009d9a;--ibm-teal-light:#d9fbfb;
+  --ibm-yellow:#f1c21b;--ibm-yellow-light:#fcf4d6;
+  --ibm-red:#da1e28;
+}
+.page{background:#fff;min-height:600px;border:1px solid var(--ibm-gray-20)}
+.topbar{background:var(--ibm-gray-100);padding:0 1rem;height:48px;display:flex;align-items:center;gap:1rem}
+.topbar-logo{color:#fff;font-size:18px;font-weight:600;letter-spacing:-.3px;font-family:'IBM Plex Sans',sans-serif}
+.topbar-logo span{color:var(--ibm-blue);font-weight:300}
+.topbar-tag{font-size:11px;color:var(--ibm-gray-30);font-weight:400;border-left:1px solid var(--ibm-gray-50);padding-left:1rem;letter-spacing:.5px;text-transform:uppercase}
+.hero{background:var(--ibm-blue);padding:2rem 1.5rem 1.5rem;border-bottom:3px solid #0353e9}
+.hero-eyebrow{font-size:11px;color:#a6c8ff;letter-spacing:1px;text-transform:uppercase;font-weight:500;margin-bottom:.5rem}
+.hero-title{font-size:26px;font-weight:300;color:#fff;line-height:1.25;margin-bottom:.4rem}
+.hero-title strong{font-weight:600}
+.hero-sub{font-size:13px;color:#a6c8ff;font-weight:400;max-width:520px;line-height:1.5}
+.hero-pills{display:flex;gap:.5rem;margin-top:1rem;flex-wrap:wrap}
+.pill{font-size:11px;font-weight:500;padding:3px 10px;border:1px solid rgba(255,255,255,.3);color:#fff;letter-spacing:.3px}
+.nav-tabs{display:flex;border-bottom:1px solid var(--ibm-gray-20);background:#fff;overflow-x:auto;padding:0 1rem}
+.tab{font-size:13px;padding:12px 14px;cursor:pointer;color:var(--ibm-gray-70);border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s;font-weight:400;font-family:'IBM Plex Sans',sans-serif}
+.tab:hover{color:var(--ibm-gray-100);background:var(--ibm-gray-10)}
+.tab.active{color:var(--ibm-blue);border-bottom-color:var(--ibm-blue);font-weight:500}
+.content{padding:1.5rem;display:none}
+.content.active{display:block}
+.q-label{font-size:11px;font-weight:500;color:var(--ibm-blue);text-transform:uppercase;letter-spacing:.8px;margin-bottom:.4rem;display:flex;align-items:center;gap:.5rem}
+.badge{font-size:10px;padding:2px 7px;font-weight:500;letter-spacing:.3px;text-transform:uppercase}
+.badge-core{background:var(--ibm-blue-light);color:var(--ibm-blue)}
+.badge-adv{background:var(--ibm-purple-light);color:var(--ibm-purple)}
+.badge-fire{background:var(--ibm-yellow-light);color:#7d5d00}
+.badge-real{background:var(--ibm-green-light);color:#0e6027}
+.q-heading{font-size:19px;font-weight:300;color:var(--ibm-gray-100);line-height:1.3;margin-bottom:1.25rem;font-family:'IBM Plex Serif',serif}
+.section-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.8px;color:var(--ibm-gray-50);margin:1.25rem 0 .6rem;display:flex;align-items:center;gap:.5rem}
+.section-label::after{content:'';flex:1;height:1px;background:var(--ibm-gray-20)}
+.def-box{background:var(--ibm-gray-10);border-left:3px solid var(--ibm-blue);padding:.85rem 1rem;margin-bottom:1rem}
+.def-box p{font-size:13.5px;line-height:1.6;color:var(--ibm-gray-90)}
+.def-box strong{font-weight:600;color:var(--ibm-gray-100)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+@media(max-width:580px){.two-col{grid-template-columns:1fr}}
+.compare-card{border:1px solid var(--ibm-gray-20);padding:1rem}
+.compare-card.pa{border-top:3px solid var(--ibm-blue)}
+.compare-card.om{border-top:3px solid var(--ibm-teal)}
+.compare-title{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.6rem}
+.compare-title.pa{color:var(--ibm-blue)}
+.compare-title.om{color:var(--ibm-teal)}
+.compare-card p{font-size:13px;color:var(--ibm-gray-70);line-height:1.55;margin-bottom:.4rem}
+.compare-card .txn{font-family:'IBM Plex Mono',monospace;font-size:12px;background:var(--ibm-gray-10);padding:2px 7px;color:var(--ibm-gray-90);display:inline-block;margin-top:.4rem}
+.step-list{counter-reset:steps;list-style:none}
+.step-item{counter-increment:steps;display:flex;gap:.85rem;margin-bottom:1rem;align-items:flex-start}
+.step-num{min-width:28px;height:28px;background:var(--ibm-blue);color:#fff;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'IBM Plex Mono',monospace}
+.step-body{flex:1}
+.step-body strong{font-size:13.5px;font-weight:600;color:var(--ibm-gray-100);display:block;margin-bottom:.2rem}
+.step-body p{font-size:13px;color:var(--ibm-gray-70);line-height:1.5}
+.it-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:1rem}
+.it-table th{background:var(--ibm-gray-90);color:#fff;padding:8px 10px;text-align:left;font-weight:500;font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+.it-table td{padding:8px 10px;border-bottom:1px solid var(--ibm-gray-20);color:var(--ibm-gray-90);vertical-align:top}
+.it-table tr:hover td{background:var(--ibm-gray-10)}
+.it-num{font-family:'IBM Plex Mono',monospace;font-weight:500;color:var(--ibm-blue);font-size:12px}
+.it-name{font-weight:500;color:var(--ibm-gray-100)}
+.tip-box{background:var(--ibm-blue-light);border-left:3px solid var(--ibm-blue);padding:.75rem 1rem;margin-top:1rem}
+.tip-box p{font-size:13px;color:#001d6c;line-height:1.5}
+.tip-box strong{font-weight:600}
+.flow-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.6rem;margin-bottom:1rem}
+.flow-card{background:var(--ibm-gray-10);padding:.7rem .85rem;border-bottom:2px solid var(--ibm-gray-30)}
+.flow-card.pa{border-bottom-color:var(--ibm-blue)}
+.flow-card.tm{border-bottom-color:var(--ibm-teal)}
+.flow-card.fi{border-bottom-color:var(--ibm-green)}
+.flow-card.pe{border-bottom-color:var(--ibm-purple)}
+.flow-card-label{font-size:10px;text-transform:uppercase;letter-spacing:.6px;font-weight:500;color:var(--ibm-gray-50);margin-bottom:.35rem}
+.flow-card-title{font-size:13px;font-weight:600;color:var(--ibm-gray-100);margin-bottom:.3rem}
+.flow-card-items{font-size:11.5px;color:var(--ibm-gray-70);line-height:1.6;font-family:'IBM Plex Mono',monospace}
+.arrow-row{display:flex;align-items:center;justify-content:center;gap:.3rem;margin:.25rem 0;color:var(--ibm-gray-50);font-size:12px}
+.cheat-table{width:100%;border-collapse:collapse;font-size:13px}
+.cheat-table th{background:var(--ibm-blue);color:#fff;padding:8px 12px;text-align:left;font-weight:500;font-size:12px;text-transform:uppercase;letter-spacing:.4px}
+.cheat-table td{padding:8px 12px;border-bottom:1px solid var(--ibm-gray-20);color:var(--ibm-gray-90)}
+.cheat-table tr:last-child td{border-bottom:none}
+.cheat-table td:first-child{font-weight:500;color:var(--ibm-gray-100)}
+.cheat-table td code{font-family:'IBM Plex Mono',monospace;font-size:12px;background:var(--ibm-gray-10);padding:1px 5px;color:var(--ibm-gray-90)}
+.it-highlight{background:var(--ibm-blue-light)}
+.it-highlight .it-num,.it-highlight .it-name{color:var(--ibm-blue)}
+.footer{background:var(--ibm-gray-10);border-top:1px solid var(--ibm-gray-20);padding:.85rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
+.footer-text{font-size:11.5px;color:var(--ibm-gray-50)}
+.footer-ibm{font-size:12px;font-weight:600;color:var(--ibm-gray-70);letter-spacing:-.2px}
+.retro-box{background:var(--ibm-gray-100);padding:.85rem 1rem;margin-bottom:1rem}
+.retro-box p{font-size:13px;color:#a8c8fa;line-height:1.6;font-family:'IBM Plex Mono',monospace}
+.retro-box strong{color:#fff}
+.three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1rem}
+@media(max-width:520px){.three-col{grid-template-columns:1fr 1fr}}
+.mini-card{border:1px solid var(--ibm-gray-20);padding:.65rem .85rem}
+.mini-card-label{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--ibm-gray-50);font-weight:500;margin-bottom:.25rem}
+.mini-card-val{font-size:12.5px;font-weight:600;color:var(--ibm-gray-100);font-family:'IBM Plex Mono',monospace}
+</style>
+
+<div class="page">
+  <div class="topbar">
+    <div class="topbar-logo">IBM<span>®</span></div>
+    <div class="topbar-tag">SAP HCM · Interview Preparation Guide</div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-eyebrow">Human Capital Management</div>
+    <div class="hero-title"><strong>SAP HCM</strong> Interview Answer Guide</div>
+    <div class="hero-sub">Five questions covering Basic to Advanced SAP HCM concepts — structured for technical interview preparation.</div>
+    <div class="hero-pills">
+      <div class="pill">Personnel Administration</div>
+      <div class="pill">Org Management</div>
+      <div class="pill">Infotypes</div>
+      <div class="pill">Payroll Integration</div>
+    </div>
+  </div>
+
+  <div class="nav-tabs">
+    <div class="tab active" onclick="show(0)">Q1 · Basic</div>
+    <div class="tab" onclick="show(1)">Q2 · Core</div>
+    <div class="tab" onclick="show(2)">Q3 · Scenario</div>
+    <div class="tab" onclick="show(3)">Q4 · Advanced</div>
+    <div class="tab" onclick="show(4)">Q5 · Real-world</div>
+    <div class="tab" onclick="show(5)">Cheatsheet</div>
+  </div>
+
+  <div class="content active" id="p0">
+    <div class="q-label"><span class="badge badge-core">Basic</span> Question 1</div>
+    <div class="q-heading">What is SAP HCM and why do companies use it?</div>
+
+    <div class="def-box">
+      <p><strong>SAP HCM (Human Capital Management)</strong> is a core module within SAP ERP that manages the complete employee lifecycle — from hiring through to retirement. It is also referred to as <strong>SAP HR</strong>.</p>
+    </div>
+
+    <div class="section-label">Why companies use it</div>
+    <div class="three-col">
+      <div class="mini-card" style="border-top:2px solid var(--ibm-blue)">
+        <div class="mini-card-label">Single source of truth</div>
+        <div style="font-size:13px;color:var(--ibm-gray-70);line-height:1.5;margin-top:.3rem">Eliminates data silos between HR, Finance, and Operations</div>
+      </div>
+      <div class="mini-card" style="border-top:2px solid var(--ibm-teal)">
+        <div class="mini-card-label">Legal compliance</div>
+        <div style="font-size:13px;color:var(--ibm-gray-70);line-height:1.5;margin-top:.3rem">Country-specific payroll rules, tax calculations, statutory deductions</div>
+      </div>
+      <div class="mini-card" style="border-top:2px solid var(--ibm-purple)">
+        <div class="mini-card-label">Full lifecycle coverage</div>
+        <div style="font-size:13px;color:var(--ibm-gray-70);line-height:1.5;margin-top:.3rem">Recruitment → Onboarding → Payroll → Offboarding</div>
+      </div>
+    </div>
+
+    <div class="section-label">Key sub-modules</div>
+    <table class="it-table">
+      <thead><tr><th>Business Need</th><th>SAP HCM Sub-module</th><th>Key Transaction</th></tr></thead>
+      <tbody>
+        <tr><td>Employee records management</td><td class="it-name">Personnel Administration (PA)</td><td class="it-num">PA30 / PA20</td></tr>
+        <tr><td>Define org hierarchy</td><td class="it-name">Organizational Management (OM)</td><td class="it-num">PPOME</td></tr>
+        <tr><td>Salary & statutory pay</td><td class="it-name">Payroll</td><td class="it-num">PC00_MXX</td></tr>
+        <tr><td>Leaves & attendance</td><td class="it-name">Time Management</td><td class="it-num">PT60 / PA61</td></tr>
+        <tr><td>Talent acquisition</td><td class="it-name">Recruitment & Personnel Dev.</td><td class="it-num">PB10</td></tr>
+        <tr><td>Skill & course tracking</td><td class="it-name">Training & Event Management</td><td class="it-num">LSO_PVPE</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="content" id="p1">
+    <div class="q-label"><span class="badge badge-core">Core</span> Question 2</div>
+    <div class="q-heading">Explain the difference between Personnel Administration and Organizational Management.</div>
+
+    <div class="two-col">
+      <div class="compare-card pa">
+        <div class="compare-title pa">Personnel Administration (PA)</div>
+        <p>Focuses on the <strong>individual employee</strong> — their personal, financial, and contractual data.</p>
+        <p>Data is stored in structured <strong>Infotypes</strong> with date-range validity.</p>
+        <p>Answers: <em>"Who is this person?"</em></p>
+        <div class="txn">PA30</div> <div class="txn" style="margin-left:.3rem">PA20</div> <div class="txn" style="margin-left:.3rem">PA40</div>
+      </div>
+      <div class="compare-card om">
+        <div class="compare-title om">Organizational Management (OM)</div>
+        <p>Focuses on the <strong>company structure</strong> — org units, jobs, positions, and cost centers.</p>
+        <p>Built using object-relationship model: O → S → C → P linkages.</p>
+        <p>Answers: <em>"Where does this person sit?"</em></p>
+        <div class="txn">PPOME</div> <div class="txn" style="margin-left:.3rem">PP01</div>
+      </div>
+    </div>
+
+    <div class="section-label">OM object types</div>
+    <table class="it-table">
+      <thead><tr><th>Object Key</th><th>Object Name</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td class="it-num">O</td><td class="it-name">Org Unit</td><td>Department or business unit (e.g., Finance Dept)</td></tr>
+        <tr><td class="it-num">S</td><td class="it-name">Position</td><td>Specific seat in org (e.g., Senior Analyst #1023)</td></tr>
+        <tr><td class="it-num">C</td><td class="it-name">Job</td><td>Generic role description (e.g., Analyst)</td></tr>
+        <tr><td class="it-num">P</td><td class="it-name">Person</td><td>Individual employee linked via IT0001</td></tr>
+      </tbody>
+    </table>
+
+    <div class="tip-box">
+      <p><strong>Integration point:</strong> When you assign a Position (S) to an employee in PA, SAP automatically inherits org data from OM into <strong>Infotype 0001 (Org Assignment)</strong> — this is the PA ↔ OM integration switch.</p>
+    </div>
+  </div>
+
+  <div class="content" id="p2">
+    <div class="q-label"><span class="badge badge-fire">Scenario</span> Question 3</div>
+    <div class="q-heading">A company hires a new employee. Explain step-by-step how you handle this in SAP.</div>
+
+    <div class="section-label">Step-by-step hiring process</div>
+    <ul class="step-list">
+      <li class="step-item">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <strong>Verify Position in OM — PPOME</strong>
+          <p>Confirm the Position (S) exists under the correct Org Unit with the right Job and Cost Center. Create it if missing.</p>
+        </div>
+      </li>
+      <li class="step-item">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <strong>Initiate Personnel Action — PA40</strong>
+          <p>Select action type <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;background:var(--ibm-gray-10);padding:1px 5px">Hiring</span>. Enter Entry Date, Company Code, Personnel Area, Employee Group/Subgroup.</p>
+        </div>
+      </li>
+      <li class="step-item">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <strong>Maintain Infotypes (system-prompted sequence)</strong>
+          <p>SAP auto-prompts each required Infotype in the Personnel Action sequence:</p>
+        </div>
+      </li>
+    </ul>
+
+    <table class="it-table" style="margin-left:2.8rem;width:calc(100% - 2.8rem)">
+      <thead><tr><th>Infotype</th><th>Name</th><th>Data Entered</th></tr></thead>
+      <tbody>
+        <tr class="it-highlight"><td class="it-num">0000</td><td class="it-name">Actions</td><td>Action type = Hiring, Entry date</td></tr>
+        <tr class="it-highlight"><td class="it-num">0001</td><td class="it-name">Org Assignment</td><td>Position, Org Unit, Cost Center</td></tr>
+        <tr><td class="it-num">0002</td><td class="it-name">Personal Data</td><td>Name, DOB, Gender, Nationality</td></tr>
+        <tr><td class="it-num">0006</td><td class="it-name">Addresses</td><td>Residential address</td></tr>
+        <tr><td class="it-num">0007</td><td class="it-name">Planned Working Time</td><td>Work schedule assignment</td></tr>
+        <tr><td class="it-num">0008</td><td class="it-name">Basic Pay</td><td>Wage type, salary amount</td></tr>
+        <tr><td class="it-num">0009</td><td class="it-name">Bank Details</td><td>Account number for salary payment</td></tr>
+      </tbody>
+    </table>
+
+    <ul class="step-list" style="margin-top:.8rem">
+      <li class="step-item">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <strong>Time Management Setup</strong>
+          <p>Assign Work Schedule Rule via IT0007. Configure leave entitlements and absence quotas.</p>
+        </div>
+      </li>
+      <li class="step-item">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <strong>Verify & Audit — PA20</strong>
+          <p>Display all maintained Infotypes. Run <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;background:var(--ibm-gray-10);padding:1px 5px">RPUAUD00</span> audit report if required. Employee is now active and payroll-ready.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="content" id="p3">
+    <div class="q-label"><span class="badge badge-adv">Advanced</span> Question 4</div>
+    <div class="q-heading">What are Infotypes? Give examples and explain their role.</div>
+
+    <div class="def-box">
+      <p><strong>Infotypes</strong> are structured data containers that store HR information for an employee. Each Infotype acts as a dedicated form/table for a specific category of data, with built-in <strong>date-range validity</strong> enabling full historical tracking.</p>
+    </div>
+
+    <div class="retro-box">
+      <p><strong>Structure of Infotype 0008 — Basic Pay</strong><br><br>
+PERNR : <strong>10001</strong>         (Personnel Number)<br>
+BEGDA : <strong>01.04.2026</strong>    (Valid From)<br>
+ENDDA : <strong>31.12.9999</strong>    (Valid To — open-ended)<br>
+Wage  : <strong>M001 → ₹50,000</strong> (Wage Type + Amount)<br>
+Table : <strong>PA0008</strong>        (Database table)</p>
+    </div>
+
+    <div class="section-label">Key Infotypes to know</div>
+    <table class="it-table">
+      <thead><tr><th>Infotype</th><th>Name</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr class="it-highlight"><td class="it-num">0000</td><td class="it-name">Actions</td><td>Records all HR actions — hire, terminate, transfer, promote</td></tr>
+        <tr class="it-highlight"><td class="it-num">0001</td><td class="it-name">Org Assignment</td><td>Links employee to Position, Org Unit, Cost Center</td></tr>
+        <tr><td class="it-num">0002</td><td class="it-name">Personal Data</td><td>Name, DOB, marital status, nationality</td></tr>
+        <tr><td class="it-num">0006</td><td class="it-name">Addresses</td><td>Home/mailing/emergency address</td></tr>
+        <tr><td class="it-num">0007</td><td class="it-name">Planned Working Time</td><td>Shift assignment, work schedule rule</td></tr>
+        <tr class="it-highlight"><td class="it-num">0008</td><td class="it-name">Basic Pay</td><td>Salary structure, wage types, pay scale</td></tr>
+        <tr class="it-highlight"><td class="it-num">0009</td><td class="it-name">Bank Details</td><td>Bank account number for salary disbursement</td></tr>
+        <tr><td class="it-num">0014</td><td class="it-name">Recurring Payments/Ded.</td><td>Monthly allowances and deductions</td></tr>
+        <tr><td class="it-num">0015</td><td class="it-name">Additional Payments</td><td>One-time bonuses, arrears</td></tr>
+        <tr><td class="it-num">0019</td><td class="it-name">Monitoring of Tasks</td><td>Probation dates, contract expiry reminders</td></tr>
+        <tr><td class="it-num">2001</td><td class="it-name">Absences</td><td>Leave records — annual, sick, LOP</td></tr>
+        <tr><td class="it-num">2002</td><td class="it-name">Attendances</td><td>Overtime and special attendance records</td></tr>
+      </tbody>
+    </table>
+
+    <div class="tip-box">
+      <p><strong>Interview tip:</strong> Infotypes 0000–0999 are SAP standard. Infotypes <strong>9000+</strong> are customer-defined (custom). Multiple records of the same Infotype with different date ranges store complete salary/action history — this is called <strong>time-based data management</strong>.</p>
+    </div>
+  </div>
+
+  <div class="content" id="p4">
+    <div class="q-label"><span class="badge badge-real">Real-world</span> Question 5</div>
+    <div class="q-heading">How does payroll integrate with employee data in SAP?</div>
+
+    <div class="section-label">Integration data sources</div>
+    <div class="flow-grid">
+      <div class="flow-card pa">
+        <div class="flow-card-label">PA — HR Master</div>
+        <div class="flow-card-title">Personnel Admin.</div>
+        <div class="flow-card-items">IT0008 Basic Pay<br>IT0009 Bank Details<br>IT0014 Rec. Deductions<br>IT0015 Add. Payments</div>
+      </div>
+      <div class="flow-card tm">
+        <div class="flow-card-label">TM — Time Mgmt</div>
+        <div class="flow-card-title">Time Management</div>
+        <div class="flow-card-items">IT2001 Absences<br>IT2002 Attendances<br>Work Schedules<br>Quota Balances</div>
+      </div>
+      <div class="flow-card pe" style="border-bottom-color:var(--ibm-blue)">
+        <div class="flow-card-label">Payroll Engine</div>
+        <div class="flow-card-title">Calculation Run</div>
+        <div class="flow-card-items">Gross calculation<br>Statutory deductions<br>PF / ESI / TDS<br>Retroactive pay</div>
+      </div>
+      <div class="flow-card fi">
+        <div class="flow-card-label">FI — Finance</div>
+        <div class="flow-card-title">Accounting Post</div>
+        <div class="flow-card-items">G/L posting<br>Cost center debit<br>DME bank file<br>Payslip generation</div>
+      </div>
+    </div>
+
+    <div class="section-label">Payroll run steps</div>
+    <ul class="step-list">
+      <li class="step-item">
+        <div class="step-num">1</div>
+        <div class="step-body"><strong>Release Payroll</strong><p>Lock the period to prevent further master data changes during the run.</p></div>
+      </li>
+      <li class="step-item">
+        <div class="step-num">2</div>
+        <div class="step-body"><strong>Start Payroll — <span style="font-family:'IBM Plex Mono',monospace;font-size:12px">PC00_M40_CALC</span> (India)</strong><p>Engine reads PA and TM data, applies wage types, calculates net pay.</p></div>
+      </li>
+      <li class="step-item">
+        <div class="step-num">3</div>
+        <div class="step-body"><strong>Review Payroll Results — <span style="font-family:'IBM Plex Mono',monospace;font-size:12px">PC00_M99_CWTR</span></strong><p>Verify gross-to-net for each employee. Check error log for exceptions.</p></div>
+      </li>
+      <li class="step-item">
+        <div class="step-num">4</div>
+        <div class="step-body"><strong>Post to Accounting — <span style="font-family:'IBM Plex Mono',monospace;font-size:12px">PCP0</span></strong><p>Generate FI/CO posting documents. Salary expense hits cost centers.</p></div>
+      </li>
+      <li class="step-item">
+        <div class="step-num">5</div>
+        <div class="step-body"><strong>Bank Transfer & Payslip</strong><p>Generate DME file for NEFT. Distribute payslips via <span style="font-family:'IBM Plex Mono',monospace;font-size:12px">PC00_M40_CEDT</span>.</p></div>
+      </li>
+    </ul>
+
+    <div class="tip-box">
+      <p><strong>Retroactive Payroll:</strong> If IT0008 is changed with a backdated effective date, SAP automatically recalculates past payroll periods and adjusts the difference in the current run. This is one of SAP's most powerful payroll capabilities — a key point to highlight in interviews.</p>
+    </div>
+  </div>
+
+  <div class="content" id="p5">
+    <div class="q-label"><span class="badge badge-core">Reference</span> Quick Cheatsheet</div>
+    <div class="q-heading">Transactions, Infotypes & Key Concepts at a Glance</div>
+
+    <div class="section-label">Transactions quick reference</div>
+    <table class="cheat-table">
+      <thead><tr><th>Task</th><th>Transaction</th><th>Key Infotype</th></tr></thead>
+      <tbody>
+        <tr><td>Hire employee</td><td><code>PA40</code></td><td><code>IT0000, IT0001, IT0002</code></td></tr>
+        <tr><td>Maintain HR master data</td><td><code>PA30</code></td><td>Any applicable IT</td></tr>
+        <tr><td>Display employee data</td><td><code>PA20</code></td><td>Read-only view</td></tr>
+        <tr><td>Change salary</td><td><code>PA30</code></td><td><code>IT0008</code></td></tr>
+        <tr><td>Maintain org structure</td><td><code>PPOME</code></td><td>OM objects O/S/C/P</td></tr>
+        <tr><td>Run payroll</td><td><code>PC00_MXX_CALC</code></td><td><code>IT0008, IT0007</code></td></tr>
+        <tr><td>View payslip</td><td><code>PC00_M99_CEDT</code></td><td>Payroll results cluster</td></tr>
+        <tr><td>Post to FI</td><td><code>PCP0</code></td><td>Payroll results</td></tr>
+        <tr><td>Record leave</td><td><code>PA30 / PA61</code></td><td><code>IT2001</code></td></tr>
+        <tr><td>Audit changes</td><td><code>RPUAUD00</code></td><td>All ITs (change log)</td></tr>
+      </tbody>
+    </table>
+
+    <div class="section-label" style="margin-top:1.25rem">Core concepts to remember</div>
+    <div class="two-col">
+      <div class="def-box">
+        <p><strong>Infotype validity:</strong> Every Infotype has BEGDA (begin date) and ENDDA (end date). Multiple records with different date ranges store complete history — enabling time-based data management.</p>
+      </div>
+      <div class="def-box">
+        <p><strong>PA ↔ OM integration:</strong> Assigning a Position to an employee in PA automatically inherits Org Unit, Cost Center, and Job from OM via Infotype 0001.</p>
+      </div>
+      <div class="def-box">
+        <p><strong>Retroactive payroll:</strong> Backdated changes to IT0008 trigger automatic recalculation of past periods, with differences posted in the current payroll run.</p>
+      </div>
+      <div class="def-box">
+        <p><strong>Custom Infotypes:</strong> Standard ITs are 0000–0999. Customer-defined ITs start at 9000+. Subtypes within an IT allow further categorization (e.g., IT0006 subtype 1 = permanent, 2 = temporary address).</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-text">SAP HCM Interview Guide · For preparation use only</div>
+    <div class="footer-ibm">IBM® Carbon Design</div>
+  </div>
+</div>
+
+<script>
+function show(i){
+  document.querySelectorAll('.content').forEach((el,j)=>{el.classList.toggle('active',j===i)});
+  document.querySelectorAll('.tab').forEach((el,j)=>{el.classList.toggle('active',j===i)});
+}
+</script>
