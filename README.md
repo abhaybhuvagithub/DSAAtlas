@@ -1,4 +1,4 @@
-<img width="1336" height="544" alt="image" src="https://github.com/user-attachments/assets/b56230d4-4053-4473-b549-18f1c738fcb5" /># DSAAtlas
+DSAAtlas
 Data Structures and Algorithms Atlas Complete reference including corner cases, Trade offs, Strengths and Weakness
 
 
